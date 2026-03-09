@@ -1,0 +1,516 @@
+<script setup>
+import { useRouter } from 'vue-router'
+import { BookOpen, ClipboardCheck, Calendar, Upload, Bell, Award, GraduationCap, Users, BookMarked, Target } from 'lucide-vue-next'
+
+const router = useRouter()
+
+function goToSystem() {
+  router.push('/system')
+}
+</script>
+
+<template>
+  <div class="home-page">
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="pill-label">
+          🎓 University Management Platform
+        </div>
+        
+        <h1 class="hero-title">
+          <div class="title-line-1">Manage Your University</div>
+          <div class="title-line-2">Experience Smarter</div>
+        </h1>
+        
+        <p class="hero-subtitle">
+          UNIASSIST connects students and teachers on one platform.
+          Enroll in courses, manage assignments, and stay informed.
+        </p>
+        
+        <div class="cta-buttons">
+          <button class="cta-btn primary" @click="goToSystem">
+            Get Started →
+          </button>
+          <button class="cta-btn ghost" @click="goToSystem">
+            Learn More ↓
+          </button>
+        </div>
+      </div>
+    </section>
+    
+    <section class="stats-section">
+      <div class="stats-card">
+        <div class="stat-item">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Roles</div>
+          <div class="stat-desc">Students & Teachers</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">6+</div>
+          <div class="stat-label">Courses</div>
+          <div class="stat-desc">Per Department</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Departments</div>
+          <div class="stat-desc">SE · NC · IM</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">19</div>
+          <div class="stat-label">Credits</div>
+          <div class="stat-desc">Max Per Semester</div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="features-section">
+      <h2 class="section-title">Everything You Need</h2>
+      <p class="section-subtitle">One platform for the complete university experience</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon blue">
+            <BookOpen :size="24" color="white" />
+          </div>
+          <h3 class="feature-title">Course Enrollment</h3>
+          <p class="feature-text">Browse available courses and request enrollment with one click.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon green">
+            <ClipboardCheck :size="24" color="white" />
+          </div>
+          <h3 class="feature-title">Smart Approval</h3>
+          <p class="feature-text">Teachers review requests in queue order. Fair and transparent.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon purple">
+            <Calendar :size="24" color="white" />
+          </div>
+          <h3 class="feature-title">Visual Timetable</h3>
+          <p class="feature-text">See your weekly schedule in a clear color-coded grid.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon orange">
+            <Upload :size="24" color="white" />
+          </div>
+          <h3 class="feature-title">Assignments</h3>
+          <p class="feature-text">Teachers upload files. Students download instantly.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon red">
+            <Bell :size="24" color="white" />
+          </div>
+          <h3 class="feature-title">Announcements</h3>
+          <p class="feature-text">Stay updated with reminders and announcements from teachers.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon yellow">
+            <Award :size="24" color="white" />
+          </div>
+          <h3 class="feature-title">Credit Tracking</h3>
+          <p class="feature-text">Automatic 19-credit limit tracking per semester.</p>
+        </div>
+      </div>
+    </section>
+    
+    <section class="cta-section">
+      <div class="cta-banner">
+        <h2 class="cta-title">Ready to Get Started?</h2>
+        <p class="cta-subtitle">Join UNIASSIST and manage your university experience.</p>
+        <button class="cta-button" @click="goToSystem">
+          Go to System →
+        </button>
+      </div>
+    </section>
+    
+    <footer class="home-footer">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <div class="logo-square">
+            <GraduationCap :size="16" color="white" />
+          </div>
+          <span class="brand-uni">UNI</span><span class="brand-assist">ASSIST</span>
+        </div>
+        <p class="footer-text">© 2025 UNIASSIST. All rights reserved.</p>
+      </div>
+      <div class="footer-right">
+        <p class="footer-text">Built for African Universities</p>
+      </div>
+    </footer>
+  </div>
+</template>
+
+<style scoped>
+.home-page {
+  min-height: calc(100vh - 64px);
+  margin-top: 64px;
+  background: linear-gradient(135deg, #EFF6FF 0%, #F8FAFC 50%, #ECFDF5 100%);
+  position: relative;
+}
+
+.home-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.hero-section {
+  padding: 80px 48px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pill-label {
+  display: inline-block;
+  background: #EFF6FF;
+  color: #3B82F6;
+  border: 1px solid #BFDBFE;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.hero-title {
+  margin-top: 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.title-line-1 {
+  color: #0F172A;
+}
+
+.title-line-2 {
+  color: #3B82F6;
+}
+
+.hero-subtitle {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #64748B;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+.cta-buttons {
+  margin-top: 36px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.cta-btn {
+  border-radius: 12px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms;
+  border: none;
+}
+
+.cta-btn.primary {
+  background: #3B82F6;
+  color: white;
+}
+
+.cta-btn.primary:hover {
+  background: #2563EB;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59,130,246,0.35);
+}
+
+.cta-btn.ghost {
+  background: transparent;
+  border: 1.5px solid #E2E8F0;
+  color: #374151;
+  font-weight: 500;
+}
+
+.cta-btn.ghost:hover {
+  border-color: #3B82F6;
+  color: #3B82F6;
+}
+
+.stats-section {
+  padding: 0 48px 80px;
+  position: relative;
+}
+
+.stats-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 32px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #6B7280;
+  margin-top: 4px;
+}
+
+.stat-desc {
+  font-size: 12px;
+  color: #9CA3AF;
+  margin-top: 2px;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 48px;
+  background: #E2E8F0;
+}
+
+.features-section {
+  padding: 80px 48px;
+  position: relative;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0;
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #6B7280;
+  margin: 8px 0 0 0;
+}
+
+.features-grid {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid #F1F5F9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 250ms ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.feature-icon.blue { background: #3B82F6; }
+.feature-icon.green { background: #10B981; }
+.feature-icon.purple { background: #8B5CF6; }
+.feature-icon.orange { background: #F97316; }
+.feature-icon.red { background: #EF4444; }
+.feature-icon.yellow { background: #EAB308; }
+
+.feature-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #0F172A;
+  margin: 0 0 8px 0;
+}
+
+.feature-text {
+  font-size: 14px;
+  color: #6B7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.cta-section {
+  padding: 80px 48px;
+  position: relative;
+}
+
+.cta-banner {
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  border-radius: 20px;
+  padding: 48px;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.cta-subtitle {
+  font-size: 16px;
+  color: rgba(255,255,255,0.8);
+  margin: 8px 0 0 0;
+}
+
+.cta-button {
+  background: white;
+  color: #3B82F6;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 24px;
+  cursor: pointer;
+  transition: all 200ms;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.home-footer {
+  margin-top: 80px;
+  padding: 32px 48px;
+  border-top: 1px solid #E2E8F0;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-square {
+  width: 28px;
+  height: 28px;
+  background: #3B82F6;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-uni {
+  color: #3B82F6;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.brand-assist {
+  color: #0F172A;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.footer-text {
+  font-size: 13px;
+  color: #6B7280;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 40px;
+  }
+  
+  .stats-card {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+  }
+  
+  .stat-divider {
+    width: 100%;
+    height: 1px;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta-banner {
+    padding: 32px 24px;
+  }
+  
+  .home-footer {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .footer-left {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+</style>
