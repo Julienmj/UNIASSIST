@@ -721,6 +721,11 @@ This project is open source and available under the [MIT License](LICENSE).
 - Lucide for beautiful icons
 - Netlify for seamless deployment
 
+## 👥 Contributors
+
+- **Julien Mugisha** - Project Lead & Developer
+- **Mutabazi Hans** - Contributor
+
 ---
 
 ## 📞 Support & Contact
