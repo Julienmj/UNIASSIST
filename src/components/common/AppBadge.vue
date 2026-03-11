@@ -55,7 +55,7 @@ defineProps({
 }
 .badge-neutral {
   background: transparent;
-  color: #374151;
-  border: 1px solid #E2E8F0;
+  color: var(--text-body);
+  border: 1px solid var(--border);
 }
 </style>

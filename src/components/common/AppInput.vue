@@ -77,6 +77,8 @@ function togglePassword() {
   border-radius: var(--radius-sm);
   font-size: 15px;
   transition: all 0.2s;
+  background: var(--surface);
+  color: var(--text);
 }
 .input:focus {
   outline: none;

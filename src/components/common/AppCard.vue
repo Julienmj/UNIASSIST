@@ -13,10 +13,10 @@ defineProps({
 
 <style scoped>
 .card {
-  background: #FFFFFF;
-  border: 1px solid #F1F5F9;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-sm);
   transition: box-shadow 200ms ease;
 }
 .card-sm { padding: 16px 20px; }
@@ -26,6 +26,6 @@ defineProps({
   cursor: pointer;
 }
 .card-hoverable:hover {
-  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  box-shadow: var(--shadow-hover);
 }
 </style>

@@ -68,9 +68,9 @@ function deleteReminder(id) {
 </script>
 
 <template>
-  <div style="display:flex; min-height:100vh;">
+  <div style="display:flex; min-height:calc(100vh - 64px); margin-top:64px;">
     <AppSidebar role="teacher" />
-    <div style="flex:1; display:flex; flex-direction:column;">
+    <div style="flex:1; display:flex; flex-direction:column; margin-left:256px;">
       <AppNavbar role="teacher" />
       <main class="page-content">
         <h1 style="font-size: 32px; font-weight: 800; margin: 0 0 24px 0;">Announcements & Reminders</h1>
@@ -121,7 +121,7 @@ function deleteReminder(id) {
                   v-model="announcementForm.message"
                   rows="4"
                   placeholder="Enter announcement message"
-                  style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;"
+                  style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text);"
                 ></textarea>
               </div>
               <AppSelect
@@ -183,7 +183,7 @@ function deleteReminder(id) {
                   v-model="reminderForm.message"
                   rows="4"
                   placeholder="Enter reminder message"
-                  style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;"
+                  style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text);"
                 ></textarea>
               </div>
               <AppSelect

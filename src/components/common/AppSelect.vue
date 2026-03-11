@@ -51,7 +51,8 @@ const emit = defineEmits(['update:modelValue'])
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font-size: 15px;
-  background: white;
+  background: var(--surface);
+  color: var(--text);
   cursor: pointer;
   transition: all 0.2s;
 }

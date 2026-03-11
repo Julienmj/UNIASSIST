@@ -334,14 +334,14 @@ function closeAuthCard() {
 <style scoped>
 .landing-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #EFF6FF 0%, #F8FAFC 40%, #ECFDF5 100%);
+  background: var(--bg);
   position: relative;
 }
 .landing-page::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, #CBD5E1 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
   background-size: 28px 28px;
   opacity: 0.4;
   pointer-events: none;
@@ -353,9 +353,9 @@ function closeAuthCard() {
   left: 0;
   right: 0;
   height: 64px;
-  background: white;
-  border-bottom: 1px solid #E2E8F0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   padding: 0 40px;
   display: flex;
   align-items: center;
@@ -385,7 +385,7 @@ function closeAuthCard() {
   color: #3B82F6;
 }
 .word-assist {
-  color: #0F172A;
+  color: var(--text);
 }
 .navbar-right {
   display: flex;
@@ -403,10 +403,10 @@ function closeAuthCard() {
 .nav-btn-ghost {
   background: transparent;
   color: var(--text);
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border);
 }
 .nav-btn-ghost:hover {
-  background: #F8FAFC;
+  background: var(--bg);
 }
 .nav-btn-primary {
   background: #3B82F6;
@@ -441,7 +441,7 @@ function closeAuthCard() {
 }
 .hero-subtitle {
   font-size: 18px;
-  color: #64748B;
+  color: var(--text-muted);
   font-weight: 400;
   margin: 0 0 8px 0;
 }
@@ -457,7 +457,7 @@ function closeAuthCard() {
 }
 .hero-tagline {
   font-size: 18px;
-  color: #64748B;
+  color: var(--text-muted);
   font-weight: 400;
   margin: 8px 0 0 0;
 }
@@ -470,10 +470,10 @@ function closeAuthCard() {
 .role-card {
   width: 280px;
   height: 320px;
-  background: white;
-  border: 2px solid #E2E8F0;
+  background: var(--surface);
+  border: 2px solid var(--border);
   border-radius: 24px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all 250ms ease;
   display: flex;
@@ -485,7 +485,7 @@ function closeAuthCard() {
 }
 .role-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 48px rgba(59,130,246,0.15);
+  box-shadow: var(--shadow-hover);
   border-color: #3B82F6;
 }
 .role-avatar {
@@ -507,12 +507,12 @@ function closeAuthCard() {
 .role-name {
   font-size: 26px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text);
   margin: 0;
 }
 .role-desc {
   font-size: 14px;
-  color: #64748B;
+  color: var(--text-muted);
   text-align: center;
   max-width: 200px;
   margin: 0;
@@ -537,7 +537,7 @@ function closeAuthCard() {
 
 .hero-footer {
   font-size: 14px;
-  color: #64748B;
+  color: var(--text-muted);
 }
 .link-btn {
   background: none;
@@ -564,10 +564,10 @@ function closeAuthCard() {
   width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
-  background: white;
+  background: var(--surface);
   border-radius: 20px;
   padding: 32px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-hover);
   position: relative;
 }
 .close-btn {
@@ -612,6 +612,7 @@ function closeAuthCard() {
   font-size: 24px;
   font-weight: 700;
   margin: 0 0 4px 0;
+  color: var(--text);
 }
 .auth-subtitle {
   font-size: 14px;
@@ -640,7 +641,7 @@ function closeAuthCard() {
   transition: all 0.2s;
 }
 .role-tab.active {
-  background: white;
+  background: var(--surface);
   color: var(--primary);
   box-shadow: var(--shadow-sm);
 }
@@ -676,6 +677,10 @@ function closeAuthCard() {
   font-size: 14px;
   margin-bottom: 16px;
 }
+
+.dark .error-alert {
+  color: white;
+}
 .form {
   display: flex;
   flex-direction: column;
@@ -690,7 +695,7 @@ function closeAuthCard() {
 .strength-bar {
   flex: 1;
   height: 4px;
-  background: #E2E8F0;
+  background: var(--border);
   border-radius: 2px;
   overflow: hidden;
 }

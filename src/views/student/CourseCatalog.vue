@@ -105,16 +105,16 @@ function viewCourse(course) {
     <AppSidebar role="student" />
     <div style="flex:1; display:flex; flex-direction:column; margin-left:256px;">
       <main class="page-content">
-        <h1 style="font-size: 32px; font-weight: 800; margin: 0 0 24px 0;">Course Catalog</h1>
+        <h1 style="font-size: 32px; font-weight: 800; margin: 0 0 24px 0; color: var(--text);">Course Catalog</h1>
         
-        <div style="background: white; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px;">
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px;">
           <div style="position: relative; margin-bottom: 16px;">
             <Search :size="20" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted);" />
             <input
               v-model="searchQuery"
               type="text"
               placeholder="Search courses by code or name..."
-              style="width: 100%; padding: 10px 14px 10px 44px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px;"
+              style="width: 100%; padding: 10px 14px 10px 44px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; background: var(--surface); color: var(--text);"
             />
           </div>
           
@@ -135,13 +135,13 @@ function viewCourse(course) {
         </div>
         
         <div v-if="filteredCourses.length === 0 && coursesWithTeacher.length === 0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; text-align: center;">
-          <BookOpen :size="64" style="color: #CBD5E1; margin-bottom: 16px;" />
+          <BookOpen :size="64" style="color: var(--text-muted); margin-bottom: 16px;" />
           <h3 style="font-size: 20px; font-weight: 700; margin: 0 0 8px 0; color: var(--text);">No courses available yet</h3>
           <p style="color: var(--text-muted); margin: 0; max-width: 400px;">Courses will appear here once teachers add them.</p>
         </div>
         
         <div v-else-if="filteredCourses.length === 0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; text-align: center;">
-          <BookOpen :size="64" style="color: #CBD5E1; margin-bottom: 16px;" />
+          <BookOpen :size="64" style="color: var(--text-muted); margin-bottom: 16px;" />
           <h3 style="font-size: 20px; font-weight: 700; margin: 0 0 8px 0; color: var(--text);">No courses match your filters</h3>
           <p style="color: var(--text-muted); margin: 0; max-width: 400px;">Try adjusting your search or filters.</p>
         </div>
@@ -172,7 +172,7 @@ function viewCourse(course) {
     @cancel="showEnrollModal = false"
   >
     <div v-if="selectedCourse">
-      <p style="margin: 0 0 12px 0;">You are about to request enrollment in:</p>
+      <p style="margin: 0 0 12px 0; color: var(--text-body);">You are about to request enrollment in:</p>
       <div style="padding: 16px; background: var(--bg); border-radius: var(--radius-sm); margin-bottom: 12px;">
         <div style="font-weight: 600; margin-bottom: 4px;">{{ selectedCourse.code }} - {{ selectedCourse.name }}</div>
         <div style="font-size: 14px; color: var(--text-muted);">{{ selectedCourse.teacher }}</div>

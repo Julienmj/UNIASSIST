@@ -56,14 +56,14 @@ function getInitials(name) {
 </script>
 
 <template>
-  <div style="display:flex; min-height:100vh;">
+  <div style="display:flex; min-height:calc(100vh - 64px); margin-top:64px;">
     <AppSidebar role="teacher" />
-    <div style="flex:1; display:flex; flex-direction:column;">
+    <div style="flex:1; display:flex; flex-direction:column; margin-left:256px;">
       <AppNavbar role="teacher" />
       <main class="page-content">
         <h1 style="font-size: 32px; font-weight: 800; margin: 0 0 24px 0;">Enrollment Requests</h1>
         
-        <div style="display: flex; gap: 8px; margin-bottom: 24px; background: white; padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--border); width: fit-content;">
+        <div style="display: flex; gap: 8px; margin-bottom: 24px; background: var(--surface); padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--border); width: fit-content;">
           <button :class="['tab-btn', { active: activeTab === 'all' }]" @click="activeTab = 'all'">
             All ({{ counts.all }})
           </button>
@@ -162,7 +162,7 @@ function getInitials(name) {
           v-model="notes"
           rows="3"
           placeholder="Add a note for the student..."
-          style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;"
+          style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text);"
         ></textarea>
       </div>
     </div>

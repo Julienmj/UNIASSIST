@@ -67,10 +67,10 @@ async function confirmAction() {
     <div style="flex:1; display:flex; flex-direction:column; margin-left:256px;">
       <main class="page-content">
         <div style="margin-bottom: 28px;">
-          <h1 style="font-size: 28px; font-weight: 700; margin: 0 0 6px 0; color: #0F172A;">
+          <h1 style="font-size: 28px; font-weight: 700; margin: 0 0 6px 0; color: var(--text);">
             Welcome, {{ auth.currentUser?.name?.split(' ')[0] }}!
           </h1>
-          <p style="color: #6B7280; margin: 0; font-size: 14px;">
+          <p style="color: var(--text-muted); margin: 0; font-size: 14px;">
             {{ auth.currentUser?.departmentName }} • {{ auth.currentUser?.employeeId }}
           </p>
         </div>
@@ -82,8 +82,8 @@ async function confirmAction() {
                 <BookOpen :size="24" color="#3B82F6" />
               </div>
               <div>
-                <div style="font-size: 32px; font-weight: 700; color: #0F172A; line-height: 1;">{{ myCourses.length }}</div>
-                <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">My Courses</div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--text); line-height: 1;">{{ myCourses.length }}</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">My Courses</div>
               </div>
             </div>
           </AppCard>
@@ -94,8 +94,8 @@ async function confirmAction() {
                 <Users :size="24" color="#10B981" />
               </div>
               <div>
-                <div style="font-size: 32px; font-weight: 700; color: #0F172A; line-height: 1;">{{ totalStudents }}</div>
-                <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">Total Students</div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--text); line-height: 1;">{{ totalStudents }}</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Total Students</div>
               </div>
             </div>
           </AppCard>
@@ -106,20 +106,20 @@ async function confirmAction() {
                 <Clock :size="24" color="#F59E0B" />
               </div>
               <div>
-                <div style="font-size: 32px; font-weight: 700; color: #0F172A; line-height: 1;">{{ allRequests.filter(r => r.status === 'pending').length }}</div>
-                <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">Pending Requests</div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--text); line-height: 1;">{{ allRequests.filter(r => r.status === 'pending').length }}</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Pending Requests</div>
               </div>
             </div>
           </AppCard>
           
           <AppCard>
             <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 48px; height: 48px; border-radius: 12px; background: #F8FAFC; display: flex; align-items: center; justify-content: center;">
-                <AlertCircle :size="24" color="#6B7280" />
+              <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--bg); display: flex; align-items: center; justify-content: center;">
+                <AlertCircle :size="24" color="var(--text-muted)" />
               </div>
               <div>
-                <div style="font-size: 32px; font-weight: 700; color: #0F172A; line-height: 1;">{{ myReminders.length }}</div>
-                <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">Active Reminders</div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--text); line-height: 1;">{{ myReminders.length }}</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Active Reminders</div>
               </div>
             </div>
           </AppCard>
@@ -127,7 +127,7 @@ async function confirmAction() {
         
         <AppCard>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h2 style="font-size: 18px; font-weight: 600; margin: 0; display: flex; align-items: center; gap: 8px; color: #0F172A;">
+            <h2 style="font-size: 18px; font-weight: 600; margin: 0; display: flex; align-items: center; gap: 8px; color: var(--text);">
               <Clock :size="20" color="#F59E0B" />
               Enrollment Queue
             </h2>
@@ -147,8 +147,8 @@ async function confirmAction() {
           </div>
           <div v-else style="text-align: center; padding: 40px 20px;">
             <CheckCircle :size="48" style="color: #10B981; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;" />
-            <div style="font-weight: 600; margin-bottom: 4px; color: #374151; font-size: 16px;">No pending requests</div>
-            <div style="font-size: 13px; color: #9CA3AF;">Student enrollment requests will appear here.</div>
+            <div style="font-weight: 600; margin-bottom: 4px; color: var(--text-body); font-size: 16px;">No pending requests</div>
+            <div style="font-size: 13px; color: var(--text-muted);">Student enrollment requests will appear here.</div>
           </div>
         </AppCard>
       </main>
@@ -165,23 +165,23 @@ async function confirmAction() {
     @cancel="showModal = false"
   >
     <div v-if="selectedRequest">
-      <p style="margin: 0 0 12px 0; font-size: 14px; color: #374151;">
+      <p style="margin: 0 0 12px 0; font-size: 14px; color: var(--text-body);">
         {{ modalAction === 'approve' ? 'Approve' : 'Reject' }} enrollment for:
       </p>
-      <div style="padding: 12px; background: #F8FAFC; border-radius: 8px; margin-bottom: 16px;">
-        <div style="font-weight: 600; color: #0F172A;">{{ selectedRequest.studentName }}</div>
-        <div style="font-size: 13px; color: #6B7280;">{{ selectedRequest.studentEmail }}</div>
-        <div style="font-size: 13px; color: #6B7280; margin-top: 4px;">
+      <div style="padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 16px;">
+        <div style="font-weight: 600; color: var(--text);">{{ selectedRequest.studentName }}</div>
+        <div style="font-size: 13px; color: var(--text-muted);">{{ selectedRequest.studentEmail }}</div>
+        <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
           {{ selectedRequest.courseCode }} - {{ selectedRequest.courseName }}
         </div>
       </div>
       <div>
-        <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; color: #374151;">Notes (Optional)</label>
+        <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; color: var(--text-body);">Notes (Optional)</label>
         <textarea
           v-model="modalNotes"
           rows="3"
           placeholder="Add a note for the student..."
-          style="width: 100%; padding: 10px 14px; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 14px; font-family: inherit;"
+          style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text);"
         ></textarea>
       </div>
     </div>

@@ -79,7 +79,7 @@ function downloadAssignment(a) {
             <AppBadge variant="neutral" :label="`${course.credits} Credits`" />
           </div>
           
-          <h1 style="font-size: 28px; font-weight: 800; margin: 0 0 16px 0;">{{ course.name }}</h1>
+          <h1 style="font-size: 28px; font-weight: 800; margin: 0 0 16px 0; color: var(--text);">{{ course.name }}</h1>
           
           <div style="display: grid; gap: 12px; margin-bottom: 20px;">
             <div style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
@@ -123,17 +123,17 @@ function downloadAssignment(a) {
         </AppCard>
         
         <AppCard v-if="course" style="margin-bottom: 24px;">
-          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 12px 0;">Course Description</h2>
+          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 12px 0; color: var(--text);">Course Description</h2>
           <p style="color: var(--text-muted); margin: 0; line-height: 1.6;">{{ course.description }}</p>
         </AppCard>
         
         <div v-if="isEnrolled">
-          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">Assignments</h2>
+          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0; color: var(--text);">Assignments</h2>
           <div v-if="assignments.length > 0" style="display: grid; gap: 12px;">
             <AppCard v-for="a in assignments" :key="a.id">
               <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
                 <div style="flex: 1;">
-                  <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 4px 0;">{{ a.title }}</h3>
+                  <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 4px 0; color: var(--text);">{{ a.title }}</h3>
                   <p style="font-size: 14px; color: var(--text-muted); margin: 0 0 8px 0;">{{ a.description }}</p>
                   <div style="font-size: 13px; color: var(--text-muted);">
                     Due: {{ formatDate(a.dueDate) }} • {{ a.fileName }} ({{ formatFileSize(a.fileSize) }})
@@ -163,7 +163,7 @@ function downloadAssignment(a) {
     @cancel="showEnrollModal = false"
   >
     <div v-if="course">
-      <p style="margin: 0 0 12px 0;">You are about to request enrollment in:</p>
+      <p style="margin: 0 0 12px 0; color: var(--text-body);">You are about to request enrollment in:</p>
       <div style="padding: 16px; background: var(--bg); border-radius: var(--radius-sm);">
         <div style="font-weight: 600; margin-bottom: 4px;">{{ course.code }} - {{ course.name }}</div>
         <div style="font-size: 14px; color: var(--text-muted);">{{ course.teacher }}</div>

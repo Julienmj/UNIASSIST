@@ -119,10 +119,10 @@ function getRowSpan(course) {
               <div
                 v-for="course in courses"
                 :key="course.id"
-                style="padding: 12px; border-radius: var(--radius-sm); border-left: 4px solid;"
-                :style="{ background: course.color + '22', borderLeftColor: course.color }"
+                style="padding: 12px; border-radius: var(--radius-sm); border-left: 4px solid; background: var(--surface);"
+                :style="{ borderLeftColor: course.color }"
               >
-                <div style="font-weight: 600; margin-bottom: 4px;">{{ course.code }} - {{ course.name }}</div>
+                <div style="font-weight: 600; margin-bottom: 4px; color: var(--text);">{{ course.code }} - {{ course.name }}</div>
                 <div style="font-size: 14px; color: var(--text-muted);">
                   {{ course.schedule.startTime }} - {{ course.schedule.endTime || calculateEndTime(course.schedule.startTime, course.credits) }} • {{ course.schedule.room }}
                 </div>
@@ -165,7 +165,7 @@ function getRowSpan(course) {
   text-align: center;
 }
 .time-slot {
-  background: white;
+  background: var(--surface);
   min-height: 60px;
 }
 .course-block {
@@ -176,6 +176,7 @@ function getRowSpan(course) {
   flex-direction: column;
   gap: 4px;
   z-index: 1;
+  color: var(--text);
 }
 .course-code {
   font-weight: 700;

@@ -72,9 +72,9 @@ if (typeof window !== 'undefined') {
   padding: 20px;
 }
 .modal-card {
-  background: white;
+  background: var(--surface);
   border-radius: var(--radius-lg);
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-hover);
   max-width: 480px;
   width: 100%;
   max-height: 90vh;

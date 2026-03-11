@@ -125,9 +125,9 @@ function getInitials(name) {
 </script>
 
 <template>
-  <div style="display:flex; min-height:100vh;">
+  <div style="display:flex; min-height:calc(100vh - 64px); margin-top:64px;">
     <AppSidebar role="teacher" />
-    <div style="flex:1; display:flex; flex-direction:column;">
+    <div style="flex:1; display:flex; flex-direction:column; margin-left:256px;">
       <AppNavbar role="teacher" />
       <main class="page-content">
         <button @click="router.push('/teacher/courses')" style="display: flex; align-items: center; gap: 8px; background: none; border: none; color: var(--text-muted); font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 24px;">
@@ -169,7 +169,7 @@ function getInitials(name) {
             </div>
           </AppCard>
           
-          <div style="display: flex; gap: 8px; margin-bottom: 24px; background: white; padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--border); width: fit-content;">
+          <div style="display: flex; gap: 8px; margin-bottom: 24px; background: var(--surface); padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--border); width: fit-content;">
             <button :class="['tab-btn', { active: activeTab === 'overview' }]" @click="activeTab = 'overview'">
               Overview
             </button>
@@ -190,7 +190,7 @@ function getInitials(name) {
               <textarea
                 v-model="editDesc"
                 rows="5"
-                style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; margin-bottom: 12px;"
+                style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; margin-bottom: 12px; background: var(--surface); color: var(--text);"
               ></textarea>
               <AppButton @click="saveDesc">Save Description</AppButton>
             </AppCard>
@@ -269,13 +269,13 @@ function getInitials(name) {
                   <textarea
                     v-model="uploadForm.description"
                     rows="3"
-                    style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;"
+                    style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text);"
                   ></textarea>
                 </div>
                 <AppInput v-model="uploadForm.dueDate" type="date" label="Due Date" :error="uploadErrors.dueDate" required />
                 <div>
                   <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px;">File</label>
-                  <input type="file" @change="handleFileSelect" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);" />
+                  <input type="file" @change="handleFileSelect" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text);" />
                   <p v-if="uploadErrors.file" style="font-size: 13px; color: var(--danger); margin: 4px 0 0 0;">{{ uploadErrors.file }}</p>
                   <p v-if="selectedFile" style="font-size: 13px; color: var(--text-muted); margin: 4px 0 0 0;">
                     Selected: {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
@@ -353,7 +353,7 @@ function getInitials(name) {
           v-model="reqNotes"
           rows="3"
           placeholder="Add a note for the student..."
-          style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;"
+          style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text);"
         ></textarea>
       </div>
     </div>

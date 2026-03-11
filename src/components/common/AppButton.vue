@@ -55,12 +55,12 @@ const emit = defineEmits(['click'])
 }
 
 .btn-secondary {
-  background: #F8FAFC;
-  color: #374151;
-  border: 1px solid #E2E8F0;
+  background: var(--bg);
+  color: var(--text-body);
+  border: 1px solid var(--border);
 }
 .btn-secondary:hover:not(:disabled) {
-  background: #F1F5F9;
+  background: var(--border);
 }
 
 .btn-danger {
@@ -83,10 +83,10 @@ const emit = defineEmits(['click'])
 
 .btn-ghost {
   background: transparent;
-  color: #6B7280;
-  border: 1px solid #E2E8F0;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
 }
 .btn-ghost:hover:not(:disabled) {
-  background: #F8FAFC;
+  background: var(--bg);
 }
 </style>

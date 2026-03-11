@@ -222,7 +222,7 @@ function confirmRemoveCourse() {
                     padding: '8px 16px',
                     border: '1px solid var(--border)',
                     borderRadius: 'var(--radius-sm)',
-                    background: addCourseForm.days.includes(day) ? 'var(--primary)' : 'white',
+                    background: addCourseForm.days.includes(day) ? 'var(--primary)' : 'var(--surface)',
                     color: addCourseForm.days.includes(day) ? 'white' : 'var(--text)',
                     cursor: 'pointer',
                     fontSize: '14px',
@@ -278,7 +278,7 @@ function confirmRemoveCourse() {
               <textarea
                 v-model="addCourseForm.description"
                 rows="3"
-                style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;"
+                style="width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text);"
                 :placeholder="selectedTemplate?.desc || ''"
               ></textarea>
             </div>
@@ -286,7 +286,7 @@ function confirmRemoveCourse() {
           </div>
         </AppCard>
         <div v-if="myCourses.length > 0" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
-          <div v-for="course in myCourses" :key="course.id" style="background: white; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px;">
+          <div v-for="course in myCourses" :key="course.id" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
               <div style="flex: 1;">
                 <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">{{ course.code }} - {{ course.name }}</div>

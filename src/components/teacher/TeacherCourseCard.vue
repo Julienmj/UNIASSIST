@@ -54,19 +54,19 @@ const scheduleText = computed(() => {
 
 <style scoped>
 .teacher-course-card {
-  background: white;
-  border: 1px solid #F1F5F9;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-left: 4px solid;
   border-radius: 16px;
   padding: 20px 24px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-sm);
   transition: box-shadow 200ms ease;
 }
 .teacher-course-card:hover {
-  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  box-shadow: var(--shadow-hover);
 }
 .card-header {
   display: flex;
@@ -77,14 +77,14 @@ const scheduleText = computed(() => {
   font-size: 17px;
   font-weight: 600;
   margin: 0;
-  color: #0F172A;
+  color: var(--text);
 }
 .schedule-info {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #6B7280;
+  color: var(--text-muted);
 }
 .stats-row {
   display: flex;

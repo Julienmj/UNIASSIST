@@ -64,9 +64,9 @@ function viewCourse(course) {
     <AppSidebar role="student" />
     <div style="flex:1; display:flex; flex-direction:column; margin-left:256px;">
       <main class="page-content">
-        <h1 style="font-size: 32px; font-weight: 800; margin: 0 0 24px 0;">My Enrollments</h1>
+        <h1 style="font-size: 32px; font-weight: 800; margin: 0 0 24px 0; color: var(--text);">My Enrollments</h1>
         
-        <div style="display: flex; gap: 8px; margin-bottom: 24px; background: white; padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--border); width: fit-content;">
+        <div style="display: flex; gap: 8px; margin-bottom: 24px; background: var(--surface); padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--border); width: fit-content;">
           <button
             :class="['tab-btn', { active: activeTab === 'enrolled' }]"
             @click="activeTab = 'enrolled'"
@@ -88,10 +88,10 @@ function viewCourse(course) {
         </div>
         
         <div v-if="Object.keys(semesterCredits).length > 0" style="margin-bottom: 24px;">
-          <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 12px 0;">Credit Summary</h2>
+          <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 12px 0; color: var(--text);">Credit Summary</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
             <AppCard v-for="(credits, semester) in semesterCredits" :key="semester">
-              <div style="font-weight: 600; margin-bottom: 4px;">{{ semester }}</div>
+              <div style="font-weight: 600; margin-bottom: 4px; color: var(--text);">{{ semester }}</div>
               <div style="font-size: 24px; font-weight: 700; color: var(--primary);">{{ credits }}/19</div>
               <div style="font-size: 13px; color: var(--text-muted);">credits enrolled</div>
             </AppCard>
@@ -99,7 +99,7 @@ function viewCourse(course) {
         </div>
         
         <div v-if="activeTab === 'enrolled'">
-          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">Enrolled Courses</h2>
+          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0; color: var(--text);">Enrolled Courses</h2>
           <div v-if="approvedCourses.length > 0">
             <div v-for="semester in [...new Set(approved.map(r => r.semester))]" :key="semester" style="margin-bottom: 32px;">
               <h3 style="font-size: 18px; font-weight: 600; margin: 0 0 12px 0; color: var(--text-muted);">{{ semester }}</h3>
@@ -122,7 +122,7 @@ function viewCourse(course) {
         </div>
         
         <div v-else-if="activeTab === 'pending'">
-          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">Pending Requests</h2>
+          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0; color: var(--text);">Pending Requests</h2>
           <div v-if="pending.length > 0" style="display: grid; gap: 12px;">
             <EnrollmentRequestRow
               v-for="(req, idx) in pending"
@@ -140,12 +140,12 @@ function viewCourse(course) {
         </div>
         
         <div v-else-if="activeTab === 'history'">
-          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">Enrollment History</h2>
+          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0; color: var(--text);">Enrollment History</h2>
           <div v-if="rejected.length > 0" style="display: grid; gap: 12px;">
             <AppCard v-for="req in rejected" :key="req.id">
               <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
                 <div>
-                  <div style="font-weight: 600; margin-bottom: 4px;">{{ req.courseCode }} - {{ req.courseName }}</div>
+                  <div style="font-weight: 600; margin-bottom: 4px; color: var(--text);">{{ req.courseCode }} - {{ req.courseName }}</div>
                   <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">
                     Requested: {{ formatDate(req.requestDate) }} • Responded: {{ formatDate(req.responseDate) }}
                   </div>
@@ -176,9 +176,9 @@ function viewCourse(course) {
     @confirm="confirmCancel"
     @cancel="showCancelModal = false"
   >
-    <p style="margin: 0;">Are you sure you want to cancel this enrollment request?</p>
+    <p style="margin: 0; color: var(--text-body);">Are you sure you want to cancel this enrollment request?</p>
     <div v-if="selectedRequest" style="margin-top: 12px; padding: 12px; background: var(--bg); border-radius: var(--radius-sm);">
-      <div style="font-weight: 600;">{{ selectedRequest.courseCode }} - {{ selectedRequest.courseName }}</div>
+      <div style="font-weight: 600; color: var(--text);">{{ selectedRequest.courseCode }} - {{ selectedRequest.courseName }}</div>
     </div>
   </AppModal>
 </template>

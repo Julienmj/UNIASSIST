@@ -98,8 +98,8 @@ function handleLogout() {
 .sidebar {
   width: 256px;
   height: calc(100vh - 64px);
-  background: #FFFFFF;
-  border-right: 1px solid #F1F5F9;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -111,7 +111,7 @@ function handleLogout() {
   display: flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px solid #F1F5F9;
+  border-bottom: 1px solid var(--border);
 }
 .logo {
   width: 36px;
@@ -140,7 +140,7 @@ function handleLogout() {
   gap: 12px;
   padding: 10px 16px;
   border-radius: 10px;
-  color: #6B7280;
+  color: var(--text-muted);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -148,8 +148,8 @@ function handleLogout() {
   position: relative;
 }
 .nav-link:hover {
-  background: #F8FAFC;
-  color: #374151;
+  background: var(--bg);
+  color: var(--text-body);
 }
 .nav-link-active {
   background: #EFF6FF;
@@ -169,7 +169,7 @@ function handleLogout() {
 }
 .sidebar-footer {
   padding: 16px;
-  border-top: 1px solid #F1F5F9;
+  border-top: 1px solid var(--border);
 }
 .user-info {
   display: flex;
@@ -202,7 +202,7 @@ function handleLogout() {
 }
 .user-dept {
   font-size: 12px;
-  color: #6B7280;
+  color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -215,7 +215,7 @@ function handleLogout() {
   gap: 8px;
   padding: 10px;
   background: none;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--danger);
   font-size: 14px;

@@ -2,11 +2,13 @@
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/auth.js'
-import { GraduationCap, LogOut, Home, LayoutDashboard } from 'lucide-vue-next'
+import { useThemeStore } from '../../stores/theme.js'
+import { GraduationCap, LogOut, Home, LayoutDashboard, Moon, Sun } from 'lucide-vue-next'
 
 const router = useRouter()
 const route = useRoute()
 const auth = useAuthStore()
+const theme = useThemeStore()
 
 const activeTab = computed(() => {
   if (route.path === '/') return 'home'
@@ -70,6 +72,10 @@ function handleLogout() {
     </div>
     
     <div class="navbar-right">
+      <button class="theme-toggle" @click="theme.toggleTheme" title="Toggle theme">
+        <Moon v-if="!theme.isDark" :size="18" />
+        <Sun v-if="theme.isDark" :size="18" />
+      </button>
       <template v-if="isLoggedIn">
         <div class="user-info">
           <div class="user-avatar" :style="{ background: deptColor }">
@@ -93,9 +99,9 @@ function handleLogout() {
   left: 0;
   right: 0;
   height: 64px;
-  background: white;
-  border-bottom: 1px solid #E2E8F0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   padding: 0 48px;
   display: flex;
   align-items: center;
@@ -136,7 +142,7 @@ function handleLogout() {
 }
 
 .brand-assist {
-  color: #0F172A;
+  color: var(--text);
 }
 
 .navbar-center {
@@ -144,7 +150,7 @@ function handleLogout() {
 }
 
 .tab-container {
-  background: #F1F5F9;
+  background: var(--bg);
   border-radius: 999px;
   padding: 4px;
   display: inline-flex;
@@ -163,18 +169,18 @@ function handleLogout() {
   align-items: center;
   gap: 8px;
   background: transparent;
-  color: #6B7280;
+  color: var(--text-muted);
 }
 
 .tab-btn:hover {
-  color: #0F172A;
+  color: var(--text);
 }
 
 .tab-btn.active {
-  background: white;
-  color: #0F172A;
+  background: var(--surface);
+  color: var(--text);
   font-weight: 600;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .navbar-right {
@@ -183,6 +189,26 @@ function handleLogout() {
   gap: 12px;
   min-width: 200px;
   justify-content: flex-end;
+}
+
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-body);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 150ms;
+}
+
+.theme-toggle:hover {
+  background: var(--bg);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .auth-btn {
@@ -199,12 +225,12 @@ function handleLogout() {
 
 .auth-btn.ghost {
   background: transparent;
-  border: 1px solid #E2E8F0;
-  color: #374151;
+  border: 1px solid var(--border);
+  color: var(--text-body);
 }
 
 .auth-btn.ghost:hover {
-  background: #F8FAFC;
+  background: var(--bg);
 }
 
 .user-info {
@@ -228,7 +254,7 @@ function handleLogout() {
 .user-name {
   font-size: 14px;
   font-weight: 500;
-  color: #0F172A;
+  color: var(--text);
 }
 
 @media (max-width: 768px) {

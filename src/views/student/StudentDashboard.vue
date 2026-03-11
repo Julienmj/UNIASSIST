@@ -54,10 +54,10 @@ function viewCourse(course) {
     <div style="flex:1; display:flex; flex-direction:column; margin-left:256px;">
       <main class="page-content">
         <div style="margin-bottom: 28px;">
-          <h1 style="font-size: 28px; font-weight: 700; margin: 0 0 6px 0; color: #0F172A;">
+          <h1 style="font-size: 28px; font-weight: 700; margin: 0 0 6px 0; color: var(--text);">
             Welcome back, {{ auth.currentUser?.name?.split(' ')[0] }}!
           </h1>
-          <p style="color: #6B7280; margin: 0; font-size: 14px;">
+          <p style="color: var(--text-muted); margin: 0; font-size: 14px;">
             {{ auth.currentUser?.departmentName }} • {{ auth.currentUser?.university }} • {{ new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }}
           </p>
         </div>
@@ -69,8 +69,8 @@ function viewCourse(course) {
                 <BookOpen :size="24" color="#10B981" />
               </div>
               <div>
-                <div style="font-size: 32px; font-weight: 700; color: #0F172A; line-height: 1;">{{ approved.length }}</div>
-                <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">Enrolled Courses</div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--text); line-height: 1;">{{ approved.length }}</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Enrolled Courses</div>
               </div>
             </div>
           </AppCard>
@@ -81,8 +81,8 @@ function viewCourse(course) {
                 <Clock :size="24" color="#F59E0B" />
               </div>
               <div>
-                <div style="font-size: 32px; font-weight: 700; color: #0F172A; line-height: 1;">{{ pending.length }}</div>
-                <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">Pending Requests</div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--text); line-height: 1;">{{ pending.length }}</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Pending Requests</div>
               </div>
             </div>
           </AppCard>
@@ -93,36 +93,36 @@ function viewCourse(course) {
                 <Award :size="24" color="#3B82F6" />
               </div>
               <div>
-                <div style="font-size: 32px; font-weight: 700; color: #0F172A; line-height: 1;">{{ totalCredits }}/19</div>
-                <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">Total Credits</div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--text); line-height: 1;">{{ totalCredits }}/19</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Total Credits</div>
               </div>
             </div>
           </AppCard>
           
           <AppCard>
             <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 48px; height: 48px; border-radius: 12px; background: #F8FAFC; display: flex; align-items: center; justify-content: center;">
-                <Building2 :size="24" color="#6B7280" />
+              <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--bg); display: flex; align-items: center; justify-content: center;">
+                <Building2 :size="24" color="var(--text-muted)" />
               </div>
               <div>
-                <div style="font-size: 16px; font-weight: 700; color: #0F172A; line-height: 1.2;">{{ auth.currentUser?.university }}</div>
-                <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">University</div>
+                <div style="font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.2;">{{ auth.currentUser?.university }}</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">University</div>
               </div>
             </div>
           </AppCard>
         </div>
         
         <div v-if="Object.keys(semesterCredits).length > 0" style="margin-bottom: 28px;">
-          <h2 style="font-size: 18px; font-weight: 600; margin: 0 0 16px 0; color: #0F172A;">Credit Progress</h2>
+          <h2 style="font-size: 18px; font-weight: 600; margin: 0 0 16px 0; color: var(--text);">Credit Progress</h2>
           <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
             <AppCard v-for="(data, semester) in semesterCredits" :key="semester">
               <div style="margin-bottom: 12px;">
-                <div style="font-weight: 600; color: #0F172A; margin-bottom: 4px; font-size: 15px;">{{ semester }}</div>
-                <div style="font-size: 13px; color: #6B7280;">
+                <div style="font-weight: 600; color: var(--text); margin-bottom: 4px; font-size: 15px;">{{ semester }}</div>
+                <div style="font-size: 13px; color: var(--text-muted);">
                   {{ data.approved }} enrolled + {{ data.pending }} pending = {{ data.approved + data.pending }}/19 credits
                 </div>
               </div>
-              <div style="height: 8px; background: #F1F5F9; border-radius: 4px; overflow: hidden;">
+              <div style="height: 8px; background: var(--border); border-radius: 4px; overflow: hidden;">
                 <div style="height: 100%; background: #10B981; border-radius: 4px; transition: width 300ms;" :style="{ width: ((data.approved / 19) * 100) + '%' }"></div>
               </div>
             </AppCard>
@@ -130,7 +130,7 @@ function viewCourse(course) {
         </div>
         
         <div style="margin-bottom: 28px;">
-          <h2 style="font-size: 18px; font-weight: 600; margin: 0 0 16px 0; color: #0F172A;">My Courses</h2>
+          <h2 style="font-size: 18px; font-weight: 600; margin: 0 0 16px 0; color: var(--text);">My Courses</h2>
           <div v-if="approvedCourses.length > 0" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
             <EnrolledCourseCard
               v-for="course in approvedCourses"
@@ -142,21 +142,21 @@ function viewCourse(course) {
           </div>
           <AppCard v-else>
             <div style="display: flex; flex-direction: column; align-items: center; padding: 40px 20px; text-align: center;">
-              <GraduationCap :size="48" style="color: #CBD5E1; margin-bottom: 12px;" />
-              <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 6px 0; color: #374151;">No enrolled courses yet</h3>
-              <p style="color: #9CA3AF; margin: 0 0 16px 0; font-size: 13px;">Browse available courses and request enrollment.</p>
+              <GraduationCap :size="48" style="color: var(--text-muted); margin-bottom: 12px;" />
+              <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 6px 0; color: var(--text-body);">No enrolled courses yet</h3>
+              <p style="color: var(--text-muted); margin: 0 0 16px 0; font-size: 13px;">Browse available courses and request enrollment.</p>
               <AppButton variant="primary" size="sm" @click="router.push('/student/courses')">Browse Courses</AppButton>
             </div>
           </AppCard>
         </div>
         
         <div v-if="reminders.length > 0">
-          <h2 style="font-size: 18px; font-weight: 600; margin: 0 0 16px 0; color: #0F172A;">Reminders & Announcements</h2>
+          <h2 style="font-size: 18px; font-weight: 600; margin: 0 0 16px 0; color: var(--text);">Reminders & Announcements</h2>
           <div style="display: grid; gap: 12px;">
             <AppCard v-for="reminder in reminders" :key="reminder.id" style="border-left: 4px solid;" :style="{ borderLeftColor: reminder.type === 'urgent' ? '#EF4444' : reminder.type === 'warning' ? '#F59E0B' : '#3B82F6' }">
-              <div style="font-weight: 600; margin-bottom: 4px; font-size: 15px; color: #0F172A;">{{ reminder.title }}</div>
-              <div style="font-size: 13px; color: #6B7280; margin-bottom: 8px;">{{ reminder.message }}</div>
-              <div style="font-size: 12px; color: #9CA3AF;">
+              <div style="font-weight: 600; margin-bottom: 4px; font-size: 15px; color: var(--text);">{{ reminder.title }}</div>
+              <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">{{ reminder.message }}</div>
+              <div style="font-size: 12px; color: var(--text-muted);">
                 {{ reminder.courseCode }} • {{ reminder.teacherName }}
               </div>
             </AppCard>
