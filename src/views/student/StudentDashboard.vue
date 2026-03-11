@@ -5,6 +5,7 @@ import { useAuthStore } from '../../stores/auth.js'
 import { useEnrollmentsStore } from '../../stores/enrollments.js'
 import { useCoursesStore } from '../../stores/courses.js'
 import { useRemindersStore } from '../../stores/reminders.js'
+import { useAnnouncementsStore } from '../../stores/announcements.js'
 import { safeInt } from '../../utils/helpers.js'
 import AppSidebar from '../../components/common/AppSidebar.vue'
 import AppNavbar from '../../components/common/AppNavbar.vue'
@@ -18,6 +19,7 @@ const auth = useAuthStore()
 const enrollStore = useEnrollmentsStore()
 const courseStore = useCoursesStore()
 const remindersStore = useRemindersStore()
+const announcementsStore = useAnnouncementsStore()
 
 const userId = computed(() => auth.currentUser?.id ?? '')
 const approved = computed(() => enrollStore.getApprovedForStudent(userId.value))
@@ -25,6 +27,7 @@ const pending = computed(() => enrollStore.getPendingForStudent(userId.value))
 const approvedCourseIds = computed(() => approved.value.map(r => r.courseId))
 const approvedCourses = computed(() => courseStore.getCoursesByIds(approvedCourseIds.value))
 const reminders = computed(() => remindersStore.getForStudent(approvedCourseIds.value))
+const announcements = computed(() => announcementsStore.getForStudent(approvedCourseIds.value))
 
 const semesterCredits = computed(() => {
   const map = {}
@@ -150,16 +153,43 @@ function viewCourse(course) {
           </AppCard>
         </div>
         
-        <div v-if="reminders.length > 0">
-          <h2 style="font-size: 18px; font-weight: 600; margin: 0 0 16px 0; color: var(--text);">Reminders & Announcements</h2>
-          <div style="display: grid; gap: 12px;">
-            <AppCard v-for="reminder in reminders" :key="reminder.id" style="border-left: 4px solid;" :style="{ borderLeftColor: reminder.type === 'urgent' ? '#EF4444' : reminder.type === 'warning' ? '#F59E0B' : '#3B82F6' }">
-              <div style="font-weight: 600; margin-bottom: 4px; font-size: 15px; color: var(--text);">{{ reminder.title }}</div>
-              <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">{{ reminder.message }}</div>
-              <div style="font-size: 12px; color: var(--text-muted);">
-                {{ reminder.courseCode }} • {{ reminder.teacherName }}
-              </div>
-            </AppCard>
+        <div v-if="announcements.length > 0 || reminders.length > 0">
+          <h2 style="font-size: 18px; font-weight: 600; margin: 0 0 16px 0; color: var(--text);">Announcements & Reminders</h2>
+          
+          <!-- Announcements Section -->
+          <div v-if="announcements.length > 0" style="margin-bottom: 20px;">
+            <h3 style="font-size: 14px; font-weight: 600; margin: 0 0 12px 0; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Announcements</h3>
+            <div style="display: grid; gap: 12px;">
+              <AppCard v-for="announcement in announcements" :key="announcement.id" :style="{ borderLeft: announcement.pinned ? '4px solid var(--primary)' : '4px solid var(--success)' }">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                  <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                      <h4 style="font-size: 15px; font-weight: 600; margin: 0; color: var(--text);">{{ announcement.title }}</h4>
+                      <span v-if="announcement.pinned" style="padding: 2px 6px; background: var(--primary-light); color: var(--primary); border-radius: 4px; font-size: 10px; font-weight: 600;">PINNED</span>
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-muted); margin: 0 0 8px 0; line-height: 1.4;">{{ announcement.message }}</p>
+                    <div style="font-size: 12px; color: var(--text-muted);">
+                      {{ announcement.target === 'all' ? 'All Students' : `${announcement.courseCode} - ${announcement.courseName}` }} • {{ announcement.teacherName }} • {{ new Date(announcement.createdAt).toLocaleDateString() }}
+                    </div>
+                  </div>
+                </div>
+              </AppCard>
+            </div>
+          </div>
+          
+          <!-- Reminders Section -->
+          <div v-if="reminders.length > 0">
+            <h3 style="font-size: 14px; font-weight: 600; margin: 0 0 12px 0; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Reminders</h3>
+            <div style="display: grid; gap: 12px;">
+              <AppCard v-for="reminder in reminders" :key="reminder.id" style="border-left: 4px solid;" :style="{ borderLeftColor: reminder.type === 'urgent' ? '#EF4444' : reminder.type === 'warning' ? '#F59E0B' : '#3B82F6' }">
+                <div style="font-weight: 600; margin-bottom: 4px; font-size: 15px; color: var(--text);">{{ reminder.title }}</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">{{ reminder.message }}</div>
+                <div style="font-size: 12px; color: var(--text-muted);">
+                  {{ reminder.courseCode || 'All Courses' }} • {{ reminder.teacherName }}
+                  <span v-if="reminder.expiresAt"> • Expires: {{ new Date(reminder.expiresAt).toLocaleDateString() }}</span>
+                </div>
+              </AppCard>
+            </div>
           </div>
         </div>
       </main>
