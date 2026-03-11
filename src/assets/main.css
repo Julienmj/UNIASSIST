@@ -8,6 +8,8 @@
   --warning-light: #FFFBEB;
   --danger: #EF4444;
   --danger-light: #FEF2F2;
+  --info: #3B82F6;
+  --info-light: #EFF6FF;
   --bg: #F8FAFC;
   --surface: #FFFFFF;
   --border: #F1F5F9;
@@ -32,6 +34,7 @@
   --success-light: #064E3B;
   --warning-light: #78350F;
   --danger-light: #7F1D1D;
+  --info-light: #1E3A8A;
   --shadow-sm: 0 1px 4px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
   --shadow-hover: 0 4px 20px rgba(0,0,0,0.4);
 }

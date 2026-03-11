@@ -28,6 +28,26 @@ function getColor(type) {
   }
   return colors[type] || '#64748B'
 }
+
+function getBackgroundColor(type) {
+  const colors = {
+    success: 'var(--success-light)',
+    error: 'var(--danger-light)', 
+    info: 'var(--info-light)',
+    warning: 'var(--warning-light)'
+  }
+  return colors[type] || 'var(--surface)'
+}
+
+function getTextColor(type) {
+  const colors = {
+    success: 'var(--success)',
+    error: 'var(--danger)',
+    info: 'var(--info)',
+    warning: 'var(--warning)'
+  }
+  return colors[type] || 'var(--text)'
+}
 </script>
 
 <template>
@@ -37,7 +57,11 @@ function getColor(type) {
         v-for="toast in toasts"
         :key="toast.id"
         class="toast"
-        :style="{ borderLeftColor: getColor(toast.type) }"
+        :style="{ 
+          borderLeftColor: getColor(toast.type),
+          backgroundColor: getBackgroundColor(toast.type),
+          color: getTextColor(toast.type)
+        }"
       >
         <component :is="getIcon(toast.type)" :size="20" :color="getColor(toast.type)" />
         <span class="toast-message">{{ toast.message }}</span>
@@ -61,7 +85,7 @@ function getColor(type) {
   max-width: 400px;
 }
 .toast {
-  background: white;
+  background: var(--bg);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   padding: 14px 16px;
@@ -74,7 +98,7 @@ function getColor(type) {
 .toast-message {
   flex: 1;
   font-size: 14px;
-  color: var(--text);
+  font-weight: 500;
 }
 .toast-close {
   background: none;
