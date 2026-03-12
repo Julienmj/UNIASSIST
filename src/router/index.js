@@ -9,11 +9,13 @@ const routes = [
   { path: '/student/courses/:courseId', component: () => import('../views/student/CourseDetail.vue'), meta: { role: 'student' } },
   { path: '/student/enrollments', component: () => import('../views/student/MyEnrollments.vue'), meta: { role: 'student' } },
   { path: '/student/timetable', component: () => import('../views/student/TimetableView.vue'), meta: { role: 'student' } },
+  { path: '/student/assignments', component: () => import('../views/student/AssignmentsView.vue'), meta: { role: 'student' } },
   { path: '/teacher/dashboard', component: () => import('../views/teacher/TeacherDashboard.vue'), meta: { role: 'teacher' } },
   { path: '/teacher/requests', component: () => import('../views/teacher/EnrollmentRequests.vue'), meta: { role: 'teacher' } },
   { path: '/teacher/courses', component: () => import('../views/teacher/TeacherCourses.vue'), meta: { role: 'teacher' } },
   { path: '/teacher/courses/:courseId', component: () => import('../views/teacher/CourseManagement.vue'), meta: { role: 'teacher' } },
   { path: '/teacher/announcements', component: () => import('../views/teacher/AnnouncementsView.vue'), meta: { role: 'teacher' } },
+  { path: '/teacher/assignments', component: () => import('../views/teacher/AssignmentManagement.vue'), meta: { role: 'teacher' } },
   { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 

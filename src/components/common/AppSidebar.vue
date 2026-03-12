@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { LayoutDashboard, BookOpen, ClipboardList, Calendar, ClipboardCheck, Megaphone, LogOut } from 'lucide-vue-next'
+import { LayoutDashboard, BookOpen, ClipboardList, Calendar, ClipboardCheck, Megaphone, FileText, LogOut } from 'lucide-vue-next'
 import { useAuthStore } from '../../stores/auth.js'
 import { useCoursesStore } from '../../stores/courses.js'
 import { useEnrollmentsStore } from '../../stores/enrollments.js'
@@ -53,6 +53,10 @@ function handleLogout() {
           <Calendar :size="20" />
           <span>Timetable</span>
         </RouterLink>
+        <RouterLink to="/student/assignments" class="nav-link" active-class="nav-link-active">
+          <FileText :size="20" />
+          <span>Assignments</span>
+        </RouterLink>
       </template>
       
       <template v-else-if="role === 'teacher'">
@@ -72,6 +76,10 @@ function handleLogout() {
         <RouterLink to="/teacher/announcements" class="nav-link" active-class="nav-link-active">
           <Megaphone :size="20" />
           <span>Announcements & Reminders</span>
+        </RouterLink>
+        <RouterLink to="/teacher/assignments" class="nav-link" active-class="nav-link-active">
+          <FileText :size="20" />
+          <span>Assignment Management</span>
         </RouterLink>
       </template>
     </nav>

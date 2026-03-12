@@ -11,8 +11,8 @@ import AppCard from '../../components/common/AppCard.vue'
 import AppInput from '../../components/common/AppInput.vue'
 import AppSelect from '../../components/common/AppSelect.vue'
 import AppButton from '../../components/common/AppButton.vue'
-import AppModal from '../../components/common/AppModal.vue'
 import TeacherCourseCard from '../../components/teacher/TeacherCourseCard.vue'
+import AppModal from '../../components/common/AppModal.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -69,6 +69,10 @@ const pendingCountByCourse = computed(() => {
 
 function manageCourse(course) {
   router.push(`/teacher/courses/${course.id}`)
+}
+
+function manageAssignments(course) {
+  router.push(`/teacher/assignments?course=${course.id}`)
 }
 
 const showAddCourseForm = ref(false)
@@ -286,29 +290,15 @@ function confirmRemoveCourse() {
           </div>
         </AppCard>
         <div v-if="myCourses.length > 0" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
-          <div v-for="course in myCourses" :key="course.id" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
-              <div style="flex: 1;">
-                <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">{{ course.code }} - {{ course.name }}</div>
-                <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">
-                  {{ course.schedule.days.join(', ') }} • {{ course.schedule.startTime }}-{{ course.schedule.endTime }}
-                </div>
-                <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">
-                  {{ course.schedule.room }} • {{ course.semester }}
-                </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                  <span style="font-size: 13px; color: var(--success); font-weight: 500;">{{ enrolledCountByCourse[course.id] }} enrolled</span>
-                  <span v-if="pendingCountByCourse[course.id] > 0" style="font-size: 13px; color: var(--warning); font-weight: 500;">
-                    • {{ pendingCountByCourse[course.id] }} pending
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div style="display: flex; gap: 8px; margin-top: 12px;">
-              <AppButton variant="primary" size="sm" style="flex: 1;" @click="manageCourse(course)">Manage</AppButton>
-              <AppButton variant="danger" size="sm" @click="openRemoveCourseModal(course)">Remove</AppButton>
-            </div>
-          </div>
+          <TeacherCourseCard
+            v-for="course in myCourses"
+            :key="course.id"
+            :course="course"
+            :enrolled-count="enrolledCountByCourse[course.id]"
+            :pending-count="pendingCountByCourse[course.id]"
+            @manage="manageCourse"
+            @assignments="manageAssignments"
+          />
         </div>
         <AppCard v-else-if="!showAddCourseForm">
           <p style="text-align: center; color: var(--text-muted); margin: 0;">No courses added yet. Click "+ Add Course" to get started.</p>

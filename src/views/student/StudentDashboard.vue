@@ -192,7 +192,127 @@ function viewCourse(course) {
             </div>
           </div>
         </div>
+        
+        <!-- Recent Assignments -->
+        <div style="margin-bottom: 32px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h2 style="font-size: 18px; font-weight: 600; margin: 0; color: var(--text);">Recent Assignments</h2>
+            <AppButton variant="ghost" size="sm" @click="router.push('/student/assignments')">
+              View All →
+            </AppButton>
+          </div>
+          
+          <div v-if="recentAssignments.length > 0" style="display: grid; gap: 12px;">
+            <AppCard 
+              v-for="assignment in recentAssignments" 
+              :key="assignment.id"
+              style="cursor: pointer;"
+              @click="router.push('/student/assignments')"
+            >
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                    <div 
+                      style="display: flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;"
+                      :style="{ backgroundColor: assignment.type === 'quiz' ? '#FEF3C7' : '#DBEAFE', color: assignment.type === 'quiz' ? '#92400E' : '#1E40AF' }"
+                    >
+                      {{ assignment.type === 'quiz' ? 'QUIZ' : 'ASSIGNMENT' }}
+                    </div>
+                    <h4 style="font-size: 14px; font-weight: 600; margin: 0; color: var(--text);">{{ assignment.title }}</h4>
+                  </div>
+                  <div style="font-size: 12px; color: var(--text-muted);">
+                    {{ assignment.course?.code }} • {{ assignment.teacherName }}
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 11px; color: var(--text-muted);">
+                    {{ new Date(assignment.createdAt).toLocaleDateString() }}
+                  </div>
+                </div>
+              </div>
+            </AppCard>
+          </div>
+          
+          <AppCard v-else style="text-align: center; padding: 24px;">
+            <div style="color: var(--text-muted); font-size: 14px;">
+              No assignments uploaded yet
+            </div>
+          </AppCard>
+        </div>
       </main>
     </div>
   </div>
 </template>
+
+<script setup>
+import { computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../../stores/auth.js'
+import { useEnrollmentsStore } from '../../stores/enrollments.js'
+import { useCoursesStore } from '../../stores/courses.js'
+import { useRemindersStore } from '../../stores/reminders.js'
+import { useAnnouncementsStore } from '../../stores/announcements.js'
+import { useAssignmentsStore } from '../../stores/assignments.js'
+import { safeInt } from '../../utils/helpers.js'
+import AppSidebar from '../../components/common/AppSidebar.vue'
+import AppNavbar from '../../components/common/AppNavbar.vue'
+import AppCard from '../../components/common/AppCard.vue'
+import AppButton from '../../components/common/AppButton.vue'
+import EnrolledCourseCard from '../../components/student/EnrolledCourseCard.vue'
+import { BookOpen, Clock, Award, Building2, GraduationCap } from 'lucide-vue-next'
+
+const router = useRouter()
+const auth = useAuthStore()
+const enrollStore = useEnrollmentsStore()
+const courseStore = useCoursesStore()
+const remindersStore = useRemindersStore()
+const announcementsStore = useAnnouncementsStore()
+const assignmentsStore = useAssignmentsStore()
+
+const userId = computed(() => auth.currentUser?.id ?? '')
+const approved = computed(() => enrollStore.getApprovedForStudent(userId.value))
+const pending = computed(() => enrollStore.getPendingForStudent(userId.value))
+const approvedCourseIds = computed(() => approved.value.map(r => r.courseId))
+const approvedCourses = computed(() => courseStore.getCoursesByIds(approvedCourseIds.value))
+const reminders = computed(() => remindersStore.getForStudent(approvedCourseIds.value))
+const announcements = computed(() => announcementsStore.getForStudent(approvedCourseIds.value))
+
+const recentAssignments = computed(() => {
+  const assignments = []
+  approvedCourseIds.value.forEach(courseId => {
+    const courseAssignments = assignmentsStore.getByCourse(courseId)
+    assignments.push(...courseAssignments.map(assignment => ({
+      ...assignment,
+      course: approvedCourses.value.find(c => c.id === courseId)
+    })))
+  })
+  
+  return assignments
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 3) // Show only 3 most recent
+})
+
+const semesterCredits = computed(() => {
+  const map = {}
+  approved.value.forEach(r => {
+    if (!map[r.semester]) map[r.semester] = { approved: 0, pending: 0 }
+    map[r.semester].approved += safeInt(r.courseCredits)
+  })
+  pending.value.forEach(r => {
+    if (!map[r.semester]) map[r.semester] = { approved: 0, pending: 0 }
+    map[r.semester].pending += safeInt(r.courseCredits)
+  })
+  return map
+})
+
+const hasNotifications = computed(() => 
+  announcements.value.length > 0 || reminders.value.length > 0
+)
+
+onMounted(() => {
+  enrollStore.initFromStorage()
+  courseStore.initFromStorage()
+  remindersStore.initFromStorage()
+  announcementsStore.initFromStorage()
+  assignmentsStore.initFromStorage()
+})

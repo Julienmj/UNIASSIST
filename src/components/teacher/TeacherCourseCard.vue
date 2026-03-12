@@ -11,7 +11,7 @@ const props = defineProps({
   pendingCount: { type: Number, default: 0 }
 })
 
-const emit = defineEmits(['manage'])
+const emit = defineEmits(['manage', 'assignments'])
 
 const deptColor = computed(() => getDeptColor(props.course.department))
 const scheduleText = computed(() => {
@@ -46,9 +46,14 @@ const scheduleText = computed(() => {
       </div>
     </div>
     
-    <AppButton variant="primary" size="sm" @click="emit('manage', course)">
-      Manage Course →
-    </AppButton>
+    <div style="display: flex; gap: 8px; margin-top: 8px;">
+      <AppButton variant="primary" size="sm" @click="emit('manage', course)">
+        Manage Course →
+      </AppButton>
+      <AppButton variant="secondary" size="sm" @click="emit('assignments', course)">
+        📁 Assignments
+      </AppButton>
+    </div>
   </div>
 </template>
 
