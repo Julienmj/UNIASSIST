@@ -1,6 +1,8 @@
 # 🎓 UNIASSIST — Complete University Management Platform
 
-A comprehensive web-based university management system that connects students and teachers in one unified platform. Built with modern Vue.js for a seamless educational experience.
+A comprehensive web-based university management system that connects students and teachers in one unified platform. 
+
+It is built with modern Vue.js for a seamless educational experience.
 
 ## 📋 Table of Contents
 

@@ -77,7 +77,7 @@ async function confirmEnroll() {
   if (!selectedCourse.value) return
   enrollLoading.value = true
   try {
-    enrollStore.submitRequest(auth.currentUser, selectedCourse.value)
+    enrollStore.submitRequest(auth.currentUser, selectedCourse.value, courseStore)
     toast.success(`Enrollment request submitted for ${selectedCourse.value.name}!`)
     showEnrollModal.value = false
   } catch(e) {
@@ -154,6 +154,7 @@ function viewCourse(course) {
             :enrollment-status="enrollStore.getEnrollmentStatus(userId, course.id)"
             :committed-credits="enrollStore.getCommittedCredits(userId, course.semester)"
             :user-id="userId"
+            :enrolled-courses="approvedCourses"
             @enroll="openEnrollModal"
             @cancel-request="cancelRequest"
             @view-course="viewCourse"

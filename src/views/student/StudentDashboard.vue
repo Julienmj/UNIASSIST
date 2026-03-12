@@ -1,11 +1,12 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth.js'
 import { useEnrollmentsStore } from '../../stores/enrollments.js'
 import { useCoursesStore } from '../../stores/courses.js'
 import { useRemindersStore } from '../../stores/reminders.js'
 import { useAnnouncementsStore } from '../../stores/announcements.js'
+import { useAssignmentsStore } from '../../stores/assignments.js'
 import { safeInt } from '../../utils/helpers.js'
 import AppSidebar from '../../components/common/AppSidebar.vue'
 import AppNavbar from '../../components/common/AppNavbar.vue'
@@ -20,6 +21,7 @@ const enrollStore = useEnrollmentsStore()
 const courseStore = useCoursesStore()
 const remindersStore = useRemindersStore()
 const announcementsStore = useAnnouncementsStore()
+const assignmentsStore = useAssignmentsStore()
 
 const userId = computed(() => auth.currentUser?.id ?? '')
 const approved = computed(() => enrollStore.getApprovedForStudent(userId.value))
@@ -28,6 +30,25 @@ const approvedCourseIds = computed(() => approved.value.map(r => r.courseId))
 const approvedCourses = computed(() => courseStore.getCoursesByIds(approvedCourseIds.value))
 const reminders = computed(() => remindersStore.getForStudent(approvedCourseIds.value))
 const announcements = computed(() => announcementsStore.getForStudent(approvedCourseIds.value))
+
+const recentAssignments = computed(() => {
+  const assignments = []
+  approvedCourseIds.value.forEach(courseId => {
+    const courseAssignments = assignmentsStore.getByCourse(courseId)
+    assignments.push(...courseAssignments.map(assignment => ({
+      ...assignment,
+      course: approvedCourses.value.find(c => c.id === courseId)
+    })))
+  })
+  
+  return assignments
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 3) // Show only 3 most recent
+})
+
+const hasNotifications = computed(() => 
+  announcements.value.length > 0 || reminders.value.length > 0
+)
 
 const semesterCredits = computed(() => {
   const map = {}
@@ -49,6 +70,14 @@ const totalCredits = computed(() => {
 function viewCourse(course) {
   router.push(`/student/courses/${course.id}`)
 }
+
+onMounted(() => {
+  enrollStore.initFromStorage()
+  courseStore.initFromStorage()
+  remindersStore.initFromStorage()
+  announcementsStore.initFromStorage()
+  assignmentsStore.initFromStorage()
+})
 </script>
 
 <template>
@@ -244,75 +273,61 @@ function viewCourse(course) {
   </div>
 </template>
 
-<script setup>
-import { computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../../stores/auth.js'
-import { useEnrollmentsStore } from '../../stores/enrollments.js'
-import { useCoursesStore } from '../../stores/courses.js'
-import { useRemindersStore } from '../../stores/reminders.js'
-import { useAnnouncementsStore } from '../../stores/announcements.js'
-import { useAssignmentsStore } from '../../stores/assignments.js'
-import { safeInt } from '../../utils/helpers.js'
-import AppSidebar from '../../components/common/AppSidebar.vue'
-import AppNavbar from '../../components/common/AppNavbar.vue'
-import AppCard from '../../components/common/AppCard.vue'
-import AppButton from '../../components/common/AppButton.vue'
-import EnrolledCourseCard from '../../components/student/EnrolledCourseCard.vue'
-import { BookOpen, Clock, Award, Building2, GraduationCap } from 'lucide-vue-next'
+<style scoped>
+.page-content {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-const router = useRouter()
-const auth = useAuthStore()
-const enrollStore = useEnrollmentsStore()
-const courseStore = useCoursesStore()
-const remindersStore = useRemindersStore()
-const announcementsStore = useAnnouncementsStore()
-const assignmentsStore = useAssignmentsStore()
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
 
-const userId = computed(() => auth.currentUser?.id ?? '')
-const approved = computed(() => enrollStore.getApprovedForStudent(userId.value))
-const pending = computed(() => enrollStore.getPendingForStudent(userId.value))
-const approvedCourseIds = computed(() => approved.value.map(r => r.courseId))
-const approvedCourses = computed(() => courseStore.getCoursesByIds(approvedCourseIds.value))
-const reminders = computed(() => remindersStore.getForStudent(approvedCourseIds.value))
-const announcements = computed(() => announcementsStore.getForStudent(approvedCourseIds.value))
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
 
-const recentAssignments = computed(() => {
-  const assignments = []
-  approvedCourseIds.value.forEach(courseId => {
-    const courseAssignments = assignmentsStore.getByCourse(courseId)
-    assignments.push(...courseAssignments.map(assignment => ({
-      ...assignment,
-      course: approvedCourses.value.find(c => c.id === courseId)
-    })))
-  })
-  
-  return assignments
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 3) // Show only 3 most recent
-})
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+}
 
-const semesterCredits = computed(() => {
-  const map = {}
-  approved.value.forEach(r => {
-    if (!map[r.semester]) map[r.semester] = { approved: 0, pending: 0 }
-    map[r.semester].approved += safeInt(r.courseCredits)
-  })
-  pending.value.forEach(r => {
-    if (!map[r.semester]) map[r.semester] = { approved: 0, pending: 0 }
-    map[r.semester].pending += safeInt(r.courseCredits)
-  })
-  return map
-})
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
 
-const hasNotifications = computed(() => 
-  announcements.value.length > 0 || reminders.value.length > 0
-)
+.stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
 
-onMounted(() => {
-  enrollStore.initFromStorage()
-  courseStore.initFromStorage()
-  remindersStore.initFromStorage()
-  announcementsStore.initFromStorage()
-  assignmentsStore.initFromStorage()
-})
+.credit-details {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.credit-details span {
+  color: var(--success);
+}
+
+.credit-details .pending {
+  color: var(--warning);
+}
+</style>

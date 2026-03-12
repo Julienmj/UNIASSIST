@@ -3,13 +3,14 @@ import { computed } from 'vue'
 import { User, Clock } from 'lucide-vue-next'
 import AppBadge from '../common/AppBadge.vue'
 import AppButton from '../common/AppButton.vue'
-import { getDeptColor, getEndTime, safeInt } from '../../utils/helpers.js'
+import { getDeptColor, getEndTime, safeInt, hasScheduleConflict } from '../../utils/helpers.js'
 
 const props = defineProps({
   course: { type: Object, required: true },
   enrollmentStatus: { type: String, default: null },
   committedCredits: { type: Number, default: 0 },
-  userId: { type: String, required: true }
+  userId: { type: String, required: true },
+  enrolledCourses: { type: Array, default: () => [] }
 })
 
 const emit = defineEmits(['enroll', 'cancelRequest', 'viewCourse'])
@@ -17,8 +18,25 @@ const emit = defineEmits(['enroll', 'cancelRequest', 'viewCourse'])
 const deptColor = computed(() => getDeptColor(props.course.department))
 const canEnroll = computed(() => {
   if (props.enrollmentStatus === 'approved' || props.enrollmentStatus === 'pending') return false
+  if (hasConflict.value) return false
   const courseCredits = safeInt(props.course.credits)
   return props.committedCredits + courseCredits <= 19
+})
+
+const hasConflict = computed(() => {
+  return props.enrolledCourses.some(enrolledCourse => 
+    hasScheduleConflict(props.course, enrolledCourse)
+  )
+})
+
+const conflictMessage = computed(() => {
+  if (!hasConflict.value) return ''
+  const conflictingCourse = props.enrolledCourses.find(enrolledCourse => 
+    hasScheduleConflict(props.course, enrolledCourse)
+  )
+  return conflictingCourse 
+    ? `Schedule conflict with ${conflictingCourse.code}. Both courses meet at the same time.`
+    : 'Schedule conflict with another course.'
 })
 
 const creditLimitMessage = computed(() => {
@@ -38,10 +56,11 @@ const scheduleText = computed(() => {
 </script>
 
 <template>
-  <div class="course-card" :style="{ borderLeftColor: deptColor }">
+  <div class="course-card" :class="{ 'has-conflict': hasConflict }" :style="{ borderLeftColor: hasConflict ? 'var(--warning)' : deptColor }">
     <div class="card-header">
       <AppBadge :color="deptColor" :label="course.code" />
       <AppBadge variant="neutral" :label="course.departmentName" />
+      <AppBadge v-if="hasConflict" variant="warning" label="⚠️ Schedule Conflict" />
     </div>
     
     <h3 class="course-name">{{ course.name }}</h3>
@@ -76,9 +95,11 @@ const scheduleText = computed(() => {
         </AppButton>
         <div v-else>
           <AppButton variant="secondary" size="sm" disabled>
-            Credit Limit Reached
+            {{ hasConflict ? 'Schedule Conflict' : 'Credit Limit Reached' }}
           </AppButton>
-          <p class="limit-text">{{ creditLimitMessage }}</p>
+          <p class="limit-text">
+            {{ hasConflict ? conflictMessage : creditLimitMessage }}
+          </p>
         </div>
       </template>
       
@@ -124,11 +145,18 @@ const scheduleText = computed(() => {
   flex-direction: column;
   gap: 14px;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 200ms ease;
+  transition: all 200ms ease;
 }
+
+.course-card.has-conflict {
+  border-left-color: var(--warning);
+  background: var(--warning-light);
+}
+
 .course-card:hover {
   box-shadow: var(--shadow-hover);
 }
+
 .card-header {
   display: flex;
   gap: 8px;

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { safeInt } from '../utils/helpers.js'
+import { safeInt, hasScheduleConflict, getScheduleConflictMessage } from '../utils/helpers.js'
 
 const KEY = 'uniassist_enrollments'
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]') } catch { return [] } }
@@ -52,14 +52,41 @@ export const useEnrollmentsStore = defineStore('enrollments', {
     getPendingCredits: (state) => (studentId, semester) =>
       (state.requests ?? [])
         .filter(r => r.studentId === studentId && r.semester === semester && r.status === 'pending')
-        .reduce((sum, r) => sum + safeInt(r.courseCredits), 0)
+        .reduce((sum, r) => sum + safeInt(r.courseCredits), 0),
+    hasScheduleConflict: (state) => (studentId, newCourse, courseStore) => {
+      // Get approved and pending enrollments for the student
+      const studentEnrollments = (state.requests ?? []).filter(r => 
+        r.studentId === studentId && 
+        (r.status === 'approved' || r.status === 'pending')
+      )
+      
+      // Check each enrolled course for schedule conflict
+      for (const enrollment of studentEnrollments) {
+        const enrolledCourse = courseStore.getCourseById(enrollment.courseId)
+        if (enrolledCourse && hasScheduleConflict(newCourse, enrolledCourse)) {
+          return {
+            hasConflict: true,
+            conflictingCourse: enrolledCourse
+          }
+        }
+      }
+      
+      return { hasConflict: false, conflictingCourse: null }
+    }
   },
   actions: {
-    submitRequest(student, course) {
+    submitRequest(student, course, courseStore) {
       const exists = (this.requests ?? []).find(r =>
         r.studentId === student.id && r.courseId === course.id &&
         (r.status === 'pending' || r.status === 'approved'))
       if (exists) throw new Error('You already have a pending or approved enrollment for this course.')
+      
+      // Check for schedule conflicts
+      const conflictCheck = this.hasScheduleConflict(student.id, course, courseStore)
+      if (conflictCheck.hasConflict) {
+        throw new Error(getScheduleConflictMessage(conflictCheck.conflictingCourse))
+      }
+      
       const currentCredits = this.getCommittedCredits(student.id, course.semester)
       const courseCredits = safeInt(course.credits)
       if (currentCredits + courseCredits > 19) {

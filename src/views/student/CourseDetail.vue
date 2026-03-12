@@ -40,7 +40,7 @@ async function confirmEnroll() {
   if (!course.value) return
   enrollLoading.value = true
   try {
-    enrollStore.submitRequest(auth.currentUser, course.value)
+    enrollStore.submitRequest(auth.currentUser, course.value, courseStore)
     toast.success(`Enrollment request submitted!`)
     showEnrollModal.value = false
   } catch(e) {

@@ -19,3 +19,32 @@ export function safeInt(value, fallback = 0) {
   const n = parseInt(value, 10)
   return isNaN(n) ? fallback : n
 }
+
+export function parseTime(timeStr) {
+  if (!timeStr) return null
+  const [hours, minutes] = timeStr.split(':').map(Number)
+  return { hours, minutes, totalMinutes: hours * 60 + minutes }
+}
+
+export function hasScheduleConflict(course1, course2) {
+  // Check if courses are on the same day
+  const hasCommonDay = course1.schedule.days.some(day => course2.schedule.days.includes(day))
+  if (!hasCommonDay) return false
+
+  // Parse times
+  const start1 = parseTime(course1.schedule.startTime)
+  const end1 = parseTime(getEndTime(course1.schedule.startTime, course1.credits))
+  const start2 = parseTime(course2.schedule.startTime)
+  const end2 = parseTime(getEndTime(course2.schedule.startTime, course2.credits))
+
+  if (!start1 || !end1 || !start2 || !end2) return false
+
+  // Check for time overlap
+  return !(end1.totalMinutes <= start2.totalMinutes || end2.totalMinutes <= start1.totalMinutes)
+}
+
+export function getScheduleConflictMessage(conflictingCourse) {
+  return `Schedule conflict with ${conflictingCourse.code} - ${conflictingCourse.name}. ` +
+    `Both courses are scheduled on ${conflictingCourse.schedule.days.join('/')} ` +
+    `at overlapping times. Please choose a different course or time.`
+}
