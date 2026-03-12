@@ -19,6 +19,8 @@ const assignmentsStore = useAssignmentsStore()
 const selectedCourse = ref('')
 const searchQuery = ref('')
 const selectedType = ref('all')
+const isLoading = ref(false)
+const downloadingFile = ref(null)
 
 const userId = computed(() => auth.currentUser?.id ?? '')
 const approved = computed(() => enrollStore.getApprovedForStudent(userId.value))
@@ -88,13 +90,21 @@ const clearFilters = () => {
 }
 
 const downloadFile = (assignment) => {
-  // Create download link
-  const link = document.createElement('a')
-  link.href = assignment.base64Data
-  link.download = assignment.fileName
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+  downloadingFile.value = assignment.id
+  
+  try {
+    // Create download link
+    const link = document.createElement('a')
+    link.href = assignment.base64Data
+    link.download = assignment.fileName
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch (error) {
+    console.error('Download failed:', error)
+  } finally {
+    downloadingFile.value = null
+  }
 }
 
 const getTypeIcon = (type) => {
@@ -109,10 +119,20 @@ const getTypeLabel = (type) => {
   return type === 'quiz' ? 'QUIZ' : 'ASSIGNMENT'
 }
 
-onMounted(() => {
-  enrollStore.initFromStorage()
-  courseStore.initFromStorage()
-  assignmentsStore.initFromStorage()
+onMounted(async () => {
+  isLoading.value = true
+  
+  try {
+    await Promise.all([
+      enrollStore.initFromStorage(),
+      courseStore.initFromStorage(),
+      assignmentsStore.initFromStorage()
+    ])
+  } catch (error) {
+    console.error('Failed to load data:', error)
+  } finally {
+    isLoading.value = false
+  }
 })
 </script>
 
@@ -157,8 +177,16 @@ onMounted(() => {
           </div>
         </AppCard>
 
+        <!-- Loading State -->
+        <div v-if="isLoading" style="text-align: center; padding: 80px 20px;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+            <div style="width: 40px; height: 40px; border: 3px solid var(--border); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <div style="color: var(--text-muted); font-size: 16px;">Loading assignments...</div>
+          </div>
+        </div>
+
         <!-- Assignments List -->
-        <div v-if="filteredAssignments.length > 0">
+        <div v-else-if="filteredAssignments.length > 0">
           <div style="display: grid; gap: 16px;">
             <AppCard 
               v-for="assignment in filteredAssignments" 
@@ -213,10 +241,11 @@ onMounted(() => {
                   <AppButton 
                     variant="primary" 
                     size="sm"
+                    :loading="downloadingFile === assignment.id"
                     @click="downloadFile(assignment)"
                   >
                     <Download :size="16" />
-                    Download
+                    {{ downloadingFile === assignment.id ? 'Downloading...' : 'Download' }}
                   </AppButton>
                 </div>
               </div>
@@ -271,6 +300,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .page-content {
   padding: 32px;
   max-width: 1200px;
@@ -278,7 +312,7 @@ onMounted(() => {
 }
 
 .assignment-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
 .assignment-card:hover {

@@ -78,6 +78,7 @@ function manageAssignments(course) {
 const showAddCourseForm = ref(false)
 const addCourseForm = ref({ courseTemplate: '', semester: '', days: [], startTime: '', room: '', credits: 3, description: '' })
 const addCourseErrors = ref({})
+const creatingCourse = ref(false)
 
 const teacherDept = computed(() => auth.currentUser?.department ?? '')
 const availableCourseTemplates = computed(() => {
@@ -128,36 +129,45 @@ function submitAddCourse() {
   
   if (Object.keys(addCourseErrors.value).length > 0) return
   
-  const template = selectedTemplate.value
-  if (!template) return
+  creatingCourse.value = true
   
-  const deptMap = { SE: 'Software Engineering', NC: 'Networks & Cybersecurity', IM: 'Information Management' }
-  const newCourse = {
-    code: template.code,
-    name: template.name,
-    department: teacherDept.value,
-    departmentName: deptMap[teacherDept.value] ?? '',
-    credits: safeInt(addCourseForm.value.credits),
-    semester: addCourseForm.value.semester,
-    description: addCourseForm.value.description || template.desc,
-    schedule: {
-      days: [...addCourseForm.value.days].sort(),
-      startTime: addCourseForm.value.startTime,
-      endTime: calculateEndTime(addCourseForm.value.startTime, addCourseForm.value.credits),
-      room: addCourseForm.value.room
-    },
-    university: auth.currentUser?.university ?? '',
-    teacherId: teacherId.value,
-    teacher: auth.currentUser?.name ?? ''
+  try {
+    const template = selectedTemplate.value
+    if (!template) return
+    
+    const deptMap = { SE: 'Software Engineering', NC: 'Networks & Cybersecurity', IM: 'Information Management' }
+    const newCourse = {
+      code: template.code,
+      name: template.name,
+      department: teacherDept.value,
+      departmentName: deptMap[teacherDept.value] ?? '',
+      credits: safeInt(addCourseForm.value.credits),
+      semester: addCourseForm.value.semester,
+      description: addCourseForm.value.description || template.desc,
+      schedule: {
+        days: [...addCourseForm.value.days].sort(),
+        startTime: addCourseForm.value.startTime,
+        endTime: calculateEndTime(addCourseForm.value.startTime, addCourseForm.value.credits),
+        room: addCourseForm.value.room
+      },
+      university: auth.currentUser?.university ?? '',
+      teacherId: teacherId.value,
+      teacher: auth.currentUser?.name ?? ''
+    }
+    
+    courseStore.addCourse(newCourse)
+    toast.success(`Course ${template.code} added to your list!`)
+    resetAddCourseForm()
+  } catch (error) {
+    toast.error('Failed to create course')
+  } finally {
+    creatingCourse.value = false
   }
-  
-  courseStore.addCourse(newCourse)
-  toast.success(`Course ${template.code} added to your list!`)
-  resetAddCourseForm()
 }
 
 const showRemoveCourseModal = ref(false)
 const courseToRemove = ref(null)
+const removingCourse = ref(false)
 
 function openRemoveCourseModal(course) {
   courseToRemove.value = course
@@ -166,11 +176,19 @@ function openRemoveCourseModal(course) {
 
 function confirmRemoveCourse() {
   if (!courseToRemove.value) return
-  enrollStore.removeAllRequestsForCourse(courseToRemove.value.id)
-  courseStore.removeCourse(courseToRemove.value.id)
-  toast.info(`Course ${courseToRemove.value.code} removed`)
-  showRemoveCourseModal.value = false
-  courseToRemove.value = null
+  removingCourse.value = true
+  
+  try {
+    enrollStore.removeAllRequestsForCourse(courseToRemove.value.id)
+    courseStore.removeCourse(courseToRemove.value.id)
+    toast.info(`Course ${courseToRemove.value.code} removed`)
+    showRemoveCourseModal.value = false
+    courseToRemove.value = null
+  } catch (error) {
+    toast.error('Failed to remove course')
+  } finally {
+    removingCourse.value = false
+  }
 }
 </script>
 
@@ -286,7 +304,7 @@ function confirmRemoveCourse() {
                 :placeholder="selectedTemplate?.desc || ''"
               ></textarea>
             </div>
-            <AppButton @click="submitAddCourse">Add Course</AppButton>
+            <AppButton :loading="creatingCourse" @click="submitAddCourse">{{ creatingCourse ? 'Creating...' : 'Add Course' }}</AppButton>
           </div>
         </AppCard>
         <div v-if="myCourses.length > 0" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
@@ -312,6 +330,7 @@ function confirmRemoveCourse() {
     title="Remove Course"
     confirm-text="Remove"
     variant="danger"
+    :loading="removingCourse"
     @confirm="confirmRemoveCourse"
     @cancel="showRemoveCourseModal = false"
   >
