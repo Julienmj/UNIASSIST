@@ -19,6 +19,8 @@ It is built with modern Vue.js for a seamless educational experience.
 - [🛠️ Development Guide](#️-development-guide)
 - [🔍 Troubleshooting](#-troubleshooting)
 
+This also has diagrams as required in the system
+
 ---
 
 ## 🚀 Tech Stack
