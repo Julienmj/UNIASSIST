@@ -728,7 +728,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 👥 Contributors
 
 - **Julien Mugisha** - Project Lead & Developer
-- **Mutabazi Hans** - Contributor
+- **Mutabazi Hans** -  Developer
 
 ---
 
