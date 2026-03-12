@@ -93,16 +93,20 @@ const downloadFile = (assignment) => {
   downloadingFile.value = assignment.id
   
   try {
-    // Create download link
-    const link = document.createElement('a')
-    link.href = assignment.base64Data
-    link.download = assignment.fileName
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    // Add a small delay to make loading state visible
+    setTimeout(() => {
+      // Create download link
+      const link = document.createElement('a')
+      link.href = assignment.base64Data
+      link.download = assignment.fileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      
+      downloadingFile.value = null
+    }, 500)
   } catch (error) {
     console.error('Download failed:', error)
-  } finally {
     downloadingFile.value = null
   }
 }
@@ -123,6 +127,9 @@ onMounted(async () => {
   isLoading.value = true
   
   try {
+    // Add a small delay to make loading state visible
+    await new Promise(resolve => setTimeout(resolve, 800))
+    
     await Promise.all([
       enrollStore.initFromStorage(),
       courseStore.initFromStorage(),
