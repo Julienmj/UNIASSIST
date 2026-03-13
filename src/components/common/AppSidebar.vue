@@ -150,7 +150,7 @@ function handleLogout() {
   border-radius: 10px;
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 14px;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
   font-weight: 500;
   transition: all 150ms;
   position: relative;
@@ -168,7 +168,7 @@ function handleLogout() {
   margin-left: auto;
   background: var(--warning);
   color: white;
-  font-size: 11px;
+  font-size: calc(var(--text-font-size) * 0.6875) !important;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 10px;
@@ -194,14 +194,14 @@ function handleLogout() {
   justify-content: center;
   color: white;
   font-weight: 600;
-  font-size: 14px;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
 }
 .user-details {
   flex: 1;
   min-width: 0;
 }
 .user-name {
-  font-size: 14px;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
@@ -209,7 +209,7 @@ function handleLogout() {
   text-overflow: ellipsis;
 }
 .user-dept {
-  font-size: 12px;
+  font-size: calc(var(--text-font-size) * 0.75) !important;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -226,7 +226,7 @@ function handleLogout() {
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--danger);
-  font-size: 14px;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
   font-weight: 500;
   cursor: pointer;
   transition: all 150ms;

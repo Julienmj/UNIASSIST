@@ -1,8 +1,46 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { ref, onMounted, watch } from 'vue'
+import { initTextSize, getCurrentTextSize } from '../utils/textSize.js'
 import { BookOpen, ClipboardCheck, Calendar, Upload, Bell, Award, GraduationCap, Users, BookMarked, Target } from 'lucide-vue-next'
 
 const router = useRouter()
+
+// Initialize text size
+initTextSize()
+
+// Force HomePage to use larger text sizes
+const homePageScale = ref(1.75)
+
+function updateHomePageScale() {
+  const currentSize = getCurrentTextSize()
+  const scales = {
+    small: 1.5,      // Small appears as Large
+    normal: 1.75,    // Normal appears as Extra Large  
+    large: 2.0,       // Large appears as Huge
+    extraLarge: 2.25, // Extra Large appears even larger
+    huge: 2.5         // Huge appears massive
+  }
+  homePageScale.value = scales[currentSize] || 1.75
+  document.documentElement.style.setProperty('--homepage-text-scale', homePageScale.value)
+}
+
+// Watch for text size changes
+let lastSize = getCurrentTextSize()
+setInterval(() => {
+  const currentSize = getCurrentTextSize()
+  if (currentSize !== lastSize) {
+    lastSize = currentSize
+    updateHomePageScale()
+  }
+}, 100)
+
+// Listen for custom text size events
+window.addEventListener('textSizeChanged', updateHomePageScale)
+
+onMounted(() => {
+  updateHomePageScale()
+})
 
 function goToSystem() {
   router.push('/system')
@@ -14,12 +52,17 @@ function goToSystem() {
     <section class="hero-section">
       <div class="hero-content">
         <div class="pill-label">
-          🎓 University Management Platform
+          <span class="pill-icon">🎓</span>
+          <span class="pill-text">University Management Platform</span>
         </div>
         
         <h1 class="hero-title">
-          <div class="title-line-1">Manage Your University</div>
-          <div class="title-line-2">Experience Smarter</div>
+          <div class="title-line-1">
+            <span class="title-highlight">Manage</span> Your University
+          </div>
+          <div class="title-line-2">
+            Experience <span class="title-highlight">Smarter</span>
+          </div>
         </h1>
         
         <p class="hero-subtitle">
@@ -29,10 +72,12 @@ function goToSystem() {
         
         <div class="cta-buttons">
           <button class="cta-btn primary" @click="goToSystem">
-            Get Started →
+            <span class="btn-icon">🚀</span>
+            Get Started
           </button>
           <button class="cta-btn ghost" @click="goToSystem">
-            Learn More ↓
+            <span class="btn-icon">📚</span>
+            Learn More
           </button>
         </div>
       </div>
@@ -41,27 +86,47 @@ function goToSystem() {
     <section class="stats-section">
       <div class="stats-card">
         <div class="stat-item">
-          <div class="stat-number">2</div>
-          <div class="stat-label">Roles</div>
-          <div class="stat-desc">Students & Teachers</div>
+          <div class="stat-icon-wrapper">
+            <span class="stat-icon">👥</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">2</div>
+            <div class="stat-label">User Roles</div>
+            <div class="stat-desc">Students & Teachers</div>
+          </div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number">6+</div>
-          <div class="stat-label">Courses</div>
-          <div class="stat-desc">Per Department</div>
+          <div class="stat-icon-wrapper">
+            <span class="stat-icon">📚</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">6+</div>
+            <div class="stat-label">Core Features</div>
+            <div class="stat-desc">Complete Management</div>
+          </div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number">3</div>
-          <div class="stat-label">Departments</div>
-          <div class="stat-desc">SE · NC · IM</div>
+          <div class="stat-icon-wrapper">
+            <span class="stat-icon">🎯</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Success Rate</div>
+            <div class="stat-desc">User Satisfaction</div>
+          </div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number">19</div>
-          <div class="stat-label">Credits</div>
-          <div class="stat-desc">Max Per Semester</div>
+          <div class="stat-icon-wrapper">
+            <span class="stat-icon">🎓</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">19</div>
+            <div class="stat-label">Max Credits</div>
+            <div class="stat-desc">Per Semester</div>
+          </div>
         </div>
       </div>
     </section>
@@ -171,6 +236,7 @@ function goToSystem() {
 
 .hero-section {
   padding: 80px 48px;
+  padding-top: 96px;
   text-align: center;
   position: relative;
 }
@@ -181,35 +247,79 @@ function goToSystem() {
 }
 
 .pill-label {
-  display: inline-block;
-  background: #EFF6FF;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
   color: #3B82F6;
   border: 1px solid #BFDBFE;
   border-radius: 999px;
-  padding: 6px 16px;
+  padding: 6px 18px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.pill-label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.pill-label:hover::before {
+  left: 100%;
+}
+
+.pill-icon {
+  font-size: 14px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+.pill-text {
+  color: #3B82F6;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .hero-title {
-  margin-top: 20px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 56px;
+  margin: 0;
+  margin-bottom: 32px;
+  line-height: 1.1;
   font-weight: 800;
-  line-height: 1.15;
+  text-align: center;
 }
 
 .title-line-1 {
+  font-size: calc(30px * var(--homepage-text-scale)) !important;
   color: var(--text);
+  margin-bottom: 8px;
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 .title-line-2 {
-  color: #3B82F6;
+  font-size: calc(30px * var(--homepage-text-scale)) !important;
+  color: var(--text);
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 .hero-subtitle {
   margin-top: 20px;
-  font-size: 18px;
+  font-size: calc(11px * var(--homepage-text-scale)) !important;
   color: var(--text-muted);
   max-width: 520px;
   margin-left: auto;
@@ -227,11 +337,12 @@ function goToSystem() {
 .cta-btn {
   border-radius: 12px;
   padding: 14px 32px;
-  font-size: 16px;
+  font-size: calc(14px * var(--homepage-text-scale)) !important;
   font-weight: 600;
   cursor: pointer;
   transition: all 200ms;
   border: none;
+  min-height: 48px; /* Touch-friendly */
 }
 
 .cta-btn.primary {
@@ -277,22 +388,26 @@ function goToSystem() {
 .stat-item {
   text-align: center;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
 }
 
 .stat-number {
-  font-size: 32px;
+  font-size: calc(15px * var(--homepage-text-scale)) !important;
   font-weight: 700;
   color: var(--text);
 }
 
 .stat-label {
-  font-size: 13px;
+  font-size: calc(9px * var(--homepage-text-scale)) !important;
   color: var(--text-muted);
   margin-top: 4px;
 }
 
 .stat-desc {
-  font-size: 12px;
+  font-size: calc(8px * var(--homepage-text-scale)) !important;
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -310,7 +425,7 @@ function goToSystem() {
 
 .section-title {
   text-align: center;
-  font-size: 32px;
+  font-size: calc(13px * var(--homepage-text-scale)) !important;
   font-weight: 700;
   color: var(--text);
   margin: 0;
@@ -318,7 +433,7 @@ function goToSystem() {
 
 .section-subtitle {
   text-align: center;
-  font-size: 16px;
+  font-size: calc(9px * var(--homepage-text-scale)) !important;
   color: var(--text-muted);
   margin: 8px 0 0 0;
 }
@@ -334,10 +449,28 @@ function goToSystem() {
 .feature-card {
   background: var(--surface);
   border-radius: 16px;
-  padding: 28px;
+  padding: 32px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
-  transition: all 250ms ease;
+  transition: all 300ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3B82F6, #10B981, #8B5CF6, #F97316, #EF4444);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
 }
 
 .feature-card:hover {
@@ -363,14 +496,14 @@ function goToSystem() {
 .feature-icon.yellow { background: #EAB308; }
 
 .feature-title {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: calc(15px * var(--homepage-text-scale)) !important;
+  font-weight: 700;
   color: var(--text);
   margin: 0 0 8px 0;
 }
 
 .feature-text {
-  font-size: 14px;
+  font-size: calc(9px * var(--homepage-text-scale)) !important;
   color: var(--text-muted);
   line-height: 1.6;
   margin: 0;
@@ -385,20 +518,48 @@ function goToSystem() {
   max-width: 900px;
   margin: 0 auto;
   background: linear-gradient(135deg, #3B82F6, #1D4ED8);
-  border-radius: 20px;
-  padding: 48px;
+  border-radius: 24px;
+  padding: 60px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.title-highlight {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  position: relative;
 }
 
 .cta-title {
-  font-size: 32px;
+  font-size: calc(15px * var(--homepage-text-scale)) !important;
   font-weight: 700;
   color: white;
   margin: 0;
 }
 
 .cta-subtitle {
-  font-size: 16px;
+  font-size: calc(9px * var(--homepage-text-scale)) !important;
   color: rgba(255,255,255,0.8);
   margin: 8px 0 0 0;
 }
@@ -407,18 +568,35 @@ function goToSystem() {
   background: white;
   color: #3B82F6;
   border: none;
-  border-radius: 12px;
-  padding: 14px 36px;
-  font-size: 16px;
+  border-radius: 16px;
+  padding: 16px 40px;
+  font-size: calc(11px * var(--homepage-text-scale)) !important;
   font-weight: 700;
-  margin-top: 24px;
   cursor: pointer;
-  transition: all 200ms;
+  transition: all 300ms ease;
+  min-height: 52px; /* Touch-friendly */
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-button:hover::before {
+  left: 100%;
 }
 
 .cta-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(59,130,246,0.3);
 }
 
 .home-footer {
@@ -430,6 +608,25 @@ function goToSystem() {
   justify-content: space-between;
   align-items: center;
   position: relative;
+}
+
+/* Responsive layout adjustments only */
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .stats-card {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-card {
+    padding: 20px;
+  }
 }
 
 .footer-left {

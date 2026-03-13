@@ -6,7 +6,9 @@ defineProps({
   size: { type: String, default: 'md' },
   loading: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
-  type: { type: String, default: 'button' }
+  type: { type: String, default: 'button' },
+  ariaLabel: { type: String, default: null },
+  ariaDescribedby: { type: String, default: null }
 })
 
 const emit = defineEmits(['click'])
@@ -17,6 +19,9 @@ const emit = defineEmits(['click'])
     :type="type"
     :class="['btn', `btn-${variant}`, `btn-${size}`]"
     :disabled="loading || disabled"
+    :aria-label="ariaLabel"
+    :aria-describedby="ariaDescribedby"
+    :aria-busy="loading"
     @click="emit('click', $event)"
   >
     <LoadingSpinner v-if="loading" size="sm" />
@@ -26,24 +31,39 @@ const emit = defineEmits(['click'])
 
 <style scoped>
 .btn {
+  font-size: calc(var(--text-font-size) * 0.875) !important;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 14px;
-  transition: all 150ms ease;
-  cursor: pointer;
+  min-height: 44px; /* Minimum touch target size */
 }
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.btn-sm { padding: 6px 16px; font-size: 13px; border-radius: 8px; }
-.btn-md { padding: 10px 20px; }
-.btn-lg { padding: 14px 28px; font-size: 15px; }
+.btn-sm { 
+  padding: 6px 16px; 
+  font-size: calc(var(--text-font-size) * 0.75) !important; 
+  border-radius: 8px; 
+  min-height: 36px;
+}
+.btn-md { 
+  padding: 10px 20px; 
+  font-size: calc(var(--text-font-size) * 0.875) !important;
+  min-height: 44px;
+}
+.btn-lg { 
+  padding: 14px 28px; 
+  font-size: calc(var(--text-font-size) * 1) !important;
+  min-height: 52px;
+}
 
 .btn-primary {
   background: #3B82F6;

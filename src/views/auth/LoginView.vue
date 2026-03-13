@@ -2,6 +2,7 @@
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth.js'
+import { initTextSize } from '../../utils/textSize.js'
 import { UNIVERSITIES } from '../../utils/mockData.js'
 import AppInput from '../../components/common/AppInput.vue'
 import AppSelect from '../../components/common/AppSelect.vue'
@@ -10,6 +11,9 @@ import { GraduationCap, BookOpen, X } from 'lucide-vue-next'
 
 const router = useRouter()
 const auth = useAuthStore()
+
+// Initialize text size
+initTextSize()
 
 const showAuthCard = ref(false)
 const mode = ref('login')
@@ -121,21 +125,6 @@ function closeAuthCard() {
 
 <template>
   <div class="landing-page">
-    <nav class="top-navbar">
-      <div class="navbar-left">
-        <div class="logo-icon">
-          <GraduationCap :size="20" color="white" />
-        </div>
-        <div class="wordmark">
-          <span class="word-uni">UNI</span><span class="word-assist">ASSIST</span>
-        </div>
-      </div>
-      <div class="navbar-right">
-        <button class="nav-btn nav-btn-ghost" @click="openAuthCard(activeRole, 'login')">Sign In</button>
-        <button class="nav-btn nav-btn-primary" @click="openAuthCard(activeRole, 'register')">Get Started</button>
-      </div>
-    </nav>
-    
     <div class="hero-section">
       <div class="hero-content">
         <div class="hero-headline">
@@ -347,76 +336,6 @@ function closeAuthCard() {
   pointer-events: none;
 }
 
-.top-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 64px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 100;
-}
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.logo-icon {
-  width: 36px;
-  height: 36px;
-  background: #3B82F6;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.wordmark {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 22px;
-  font-weight: 800;
-}
-.word-uni {
-  color: #3B82F6;
-}
-.word-assist {
-  color: var(--text);
-}
-.navbar-right {
-  display: flex;
-  gap: 12px;
-}
-.nav-btn {
-  padding: 8px 20px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-}
-.nav-btn-ghost {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-.nav-btn-ghost:hover {
-  background: var(--bg);
-}
-.nav-btn-primary {
-  background: #3B82F6;
-  color: white;
-  font-weight: 600;
-}
-.nav-btn-primary:hover {
-  background: #1D4ED8;
-}
-
 .hero-section {
   min-height: calc(100vh - 64px);
   margin-top: 64px;
@@ -437,29 +356,102 @@ function closeAuthCard() {
 }
 .hero-headline {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 64px;
+  position: relative;
 }
+
+.hero-headline::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #3B82F6, transparent);
+  border-radius: 2px;
+  animation: slideIn 1s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100px;
+    opacity: 1;
+  }
+}
+
 .hero-subtitle {
-  font-size: 18px;
-  color: var(--text-muted);
-  font-weight: 400;
-  margin: 0 0 8px 0;
+  font-size: 18px !important;
+  color: #3B82F6;
+  font-weight: 600;
+  margin: 0 0 24px 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  animation: fadeInUp 0.8s ease-out;
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-title {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 56px;
-  font-weight: 800;
+  font-size: 56px !important;
+  font-weight: 900;
   margin: 0;
-  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 50%, #3B82F6 100%);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 6px 12px rgba(59,130,246,0.3);
+  position: relative;
+  animation: titleShimmer 3s ease-in-out infinite, fadeInUp 1s ease-out;
+  line-height: 1.05;
+  letter-spacing: -2px;
 }
+
+@keyframes titleShimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 .hero-tagline {
-  font-size: 18px;
-  color: var(--text-muted);
-  font-weight: 400;
-  margin: 8px 0 0 0;
+  font-size: 20px !important;
+  color: var(--text);
+  font-weight: 700;
+  margin: 32px 0 0 0;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, var(--text), #3B82F6, var(--text));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: taglineShimmer 4s ease-in-out infinite, fadeInUp 1.2s ease-out;
+}
+
+@keyframes taglineShimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .role-cards {
@@ -505,13 +497,13 @@ function closeAuthCard() {
   border: 3px solid #A7F3D0;
 }
 .role-name {
-  font-size: 26px;
+  font-size: calc(var(--text-font-size) * 1.625) !important;
   font-weight: 700;
   color: var(--text);
   margin: 0;
 }
 .role-desc {
-  font-size: 14px;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
   color: var(--text-muted);
   text-align: center;
   max-width: 200px;
@@ -521,7 +513,7 @@ function closeAuthCard() {
   padding: 8px 24px;
   border-radius: 999px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
   border: 1px solid;
 }
 .role-btn-student {
@@ -536,9 +528,10 @@ function closeAuthCard() {
 }
 
 .hero-footer {
-  font-size: 14px;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
   color: var(--text-muted);
 }
+
 .link-btn {
   background: none;
   border: none;
@@ -546,6 +539,7 @@ function closeAuthCard() {
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
 }
 
 .modal-overlay {
@@ -704,8 +698,35 @@ function closeAuthCard() {
   transition: all 0.3s;
 }
 .strength-text {
-  font-size: 12px;
+  font-size: calc(var(--text-font-size) * 0.75) !important;
   font-weight: 500;
+}
+
+/* Responsive text size adjustments */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: calc(var(--text-font-size) * 2.5) !important;
+  }
+  
+  .role-cards {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .role-card {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: calc(var(--text-font-size) * 2) !important;
+  }
+  
+  .role-card {
+    padding: 20px;
+  }
 }
 
 .modal-enter-active, .modal-leave-active {
@@ -729,9 +750,6 @@ function closeAuthCard() {
 }
 
 @media (max-width: 768px) {
-  .top-navbar {
-    padding: 0 20px;
-  }
   .hero-title {
     font-size: 40px;
   }

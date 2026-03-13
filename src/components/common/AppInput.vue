@@ -60,7 +60,7 @@ function togglePassword() {
   gap: 6px;
 }
 .label {
-  font-size: 14px;
+  font-size: calc(var(--text-font-size) * 0.875) !important;
   font-weight: 500;
   color: var(--text);
 }
@@ -75,7 +75,7 @@ function togglePassword() {
   padding: 10px 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  font-size: 15px;
+  font-size: var(--text-font-size) !important;
   transition: all 0.2s;
   background: var(--surface);
   color: var(--text);
@@ -108,12 +108,12 @@ function togglePassword() {
   color: var(--text);
 }
 .error-text {
-  font-size: 13px;
+  font-size: calc(var(--text-font-size) * 0.75) !important;
   color: var(--danger);
   margin: 0;
 }
 .hint-text {
-  font-size: 13px;
+  font-size: calc(var(--text-font-size) * 0.75) !important;
   color: var(--text-muted);
   margin: 0;
 }

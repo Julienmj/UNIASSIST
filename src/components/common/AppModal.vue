@@ -1,7 +1,8 @@
 <script setup>
-import { watch } from 'vue'
+import { watch, ref, nextTick } from 'vue'
 import { X } from 'lucide-vue-next'
 import AppButton from './AppButton.vue'
+import { trapFocus, generateId } from '/src/utils/accessibility.js'
 
 const props = defineProps({
   show: { type: Boolean, default: false },
@@ -13,12 +14,25 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['confirm', 'cancel'])
+const modalRef = ref(null)
+const modalId = generateId('modal')
+const titleId = generateId('title')
 
-watch(() => props.show, (val) => {
+let cleanupFocus = null
+
+watch(() => props.show, async (val) => {
   if (val) {
     document.body.style.overflow = 'hidden'
+    await nextTick()
+    if (modalRef.value) {
+      cleanupFocus = trapFocus(modalRef.value)
+    }
   } else {
     document.body.style.overflow = ''
+    if (cleanupFocus) {
+      cleanupFocus()
+      cleanupFocus = null
+    }
   }
 })
 
@@ -34,29 +48,52 @@ if (typeof window !== 'undefined') {
 </script>
 
 <template>
-  <Transition name="modal">
-    <div v-if="show" class="modal-backdrop" @click.self="emit('cancel')">
-      <div class="modal-card">
-        <div class="modal-header">
-          <h3 class="modal-title">{{ title }}</h3>
-          <button class="close-btn" @click="emit('cancel')">
-            <X :size="20" />
-          </button>
-        </div>
-        <div class="modal-body">
-          <slot />
-        </div>
-        <div class="modal-footer">
-          <AppButton variant="ghost" @click="emit('cancel')">
-            {{ cancelText }}
-          </AppButton>
-          <AppButton :variant="variant" :loading="loading" @click="emit('confirm')">
-            {{ confirmText }}
-          </AppButton>
+  <Teleport to="body">
+    <Transition name="modal">
+      <div 
+        v-if="show" 
+        class="modal-backdrop" 
+        @click.self="emit('cancel')"
+        :id="modalId"
+        role="dialog"
+        :aria-modal="true"
+        :aria-labelledby="titleId"
+      >
+        <div ref="modalRef" class="modal-card">
+          <div class="modal-header">
+            <h3 :id="titleId" class="modal-title">{{ title }}</h3>
+            <button 
+              class="close-btn" 
+              @click="emit('cancel')"
+              aria-label="Close dialog"
+            >
+              <X :size="20" />
+            </button>
+          </div>
+          <div class="modal-body">
+            <slot />
+          </div>
+          <div class="modal-footer">
+            <AppButton 
+              variant="ghost" 
+              @click="emit('cancel')"
+              aria-label="Cancel action"
+            >
+              {{ cancelText }}
+            </AppButton>
+            <AppButton 
+              :variant="variant" 
+              :loading="loading" 
+              @click="emit('confirm')"
+              aria-label="Confirm action"
+            >
+              {{ confirmText }}
+            </AppButton>
+          </div>
         </div>
       </div>
-    </div>
-  </Transition>
+    </Transition>
+  </Teleport>
 </template>
 
 <style scoped>

@@ -11,6 +11,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Text size accessibility */
+  --text-scale: 1;
+  --base-font-size: 16px;
+  --text-font-size: calc(var(--base-font-size) * var(--text-scale));
 }
 
 a {
@@ -75,5 +80,121 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+/* Text size accessibility styles */
+:root {
+  --text-scale: 1;
+  --base-font-size: 16px;
+  --text-font-size: calc(var(--base-font-size) * var(--text-scale));
+}
+
+/* Apply text size to root element */
+html {
+  font-size: var(--text-font-size) !important;
+}
+
+/* Ensure body inherits text size */
+body {
+  font-size: inherit !important;
+}
+
+/* Scale all text elements based on text size */
+h1, h2, h3, h4, h5, h6 {
+  font-size: calc(var(--text-font-size) * var(--heading-multiplier, 1)) !important;
+}
+
+p, span, div, button, input, select, textarea, label, a {
+  font-size: inherit !important;
+}
+
+/* Specific scaling for different elements */
+h1 { --heading-multiplier: 2; }
+h2 { --heading-multiplier: 1.75; }
+h3 { --heading-multiplier: 1.5; }
+h4 { --heading-multiplier: 1.25; }
+h5 { --heading-multiplier: 1.125; }
+h6 { --heading-multiplier: 1.0625; }
+
+/* Small text elements */
+.small-text, .text-muted, .caption, .form-label {
+  font-size: calc(var(--text-font-size) * 0.875) !important;
+}
+
+/* Large text elements */
+.large-text, .display-text {
+  font-size: calc(var(--text-font-size) * 1.25) !important;
+}
+
+/* Extra large text elements */
+.extra-large-text, .hero-text {
+  font-size: calc(var(--text-font-size) * 1.5) !important;
+}
+
+/* Component-specific text sizing */
+.btn, .app-button, button {
+  font-size: calc(var(--text-font-size) * 0.875) !important;
+}
+
+.card, .app-card {
+  font-size: inherit !important;
+}
+
+.navbar, .sidebar {
+  font-size: calc(var(--text-font-size) * 0.875) !important;
+}
+
+/* Form elements */
+input, select, textarea {
+  font-size: var(--text-font-size) !important;
+}
+
+/* Ensure text doesn't overflow with larger sizes */
+* {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Responsive adjustments for larger text sizes */
+@media (max-width: 768px) {
+  :root[data-text-size="large"] {
+    --text-scale: 1;
+  }
+  :root[data-text-size="extra-large"] {
+    --text-scale: 1.125;
+  }
+  :root[data-text-size="huge"] {
+    --text-scale: 1.25;
+  }
+}
+
+@media (max-width: 480px) {
+  :root[data-text-size="extra-large"] {
+    --text-scale: 1;
+  }
+  :root[data-text-size="huge"] {
+    --text-scale: 1.125;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .text-size-control button {
+    border: 2px solid ButtonText;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .text-size-dropdown {
+    transition: none;
+  }
+  
+  .text-size-btn,
+  .size-option,
+  .size-btn {
+    transition: none;
   }
 }
