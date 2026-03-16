@@ -6,7 +6,7 @@ It is built with modern Vue.js for a seamless educational experience.
 
 ## � Live Demo
 
-**Check out the deployed application**: [https://uniassistapp.netlify.app/](https://uniassistapp.netlify.app/)
+**live demo link**: [https://uniassistapp.netlify.app/](https://uniassistapp.netlify.app/)
 
 ## �📋 Table of Contents
 
