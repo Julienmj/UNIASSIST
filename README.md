@@ -4,7 +4,11 @@ A comprehensive web-based university management system that connects students an
 
 It is built with modern Vue.js for a seamless educational experience.
 
-## 📋 Table of Contents
+## � Live Demo
+
+**Check out the deployed application**: [https://uniassistapp.netlify.app/](https://uniassistapp.netlify.app/)
+
+## �📋 Table of Contents
 
 - [🚀 Tech Stack](#-tech-stack)
 - [🎯 Project Overview](#-project-overview)
