@@ -744,4 +744,4 @@ For questions, issues, or contributions:
 
 ---
 
-**Built with ❤️ for the education community**
+**Built with ❤️ for the education community.**
