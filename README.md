@@ -2,7 +2,7 @@
 
 A comprehensive web-based university management system that connects students and teachers in one unified platform. 
 
-It is built with modern Vue.js for a seamless educational experien
+It is built with modern Vue.js for a seamless educational experienc
 
 
 ## � Live Demo
