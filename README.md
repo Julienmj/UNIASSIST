@@ -1,4 +1,4 @@
-# 🎓 UNIASSIST — Complete University Management Platform.
+# 🎓 UNIASSIST — Complete University Management Platform
 
 A comprehensive web-based university management system that connects students and teachers in one unified platform. 
 
